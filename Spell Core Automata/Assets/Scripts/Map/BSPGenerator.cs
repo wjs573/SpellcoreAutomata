@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 public class BSPGenerator : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class BSPGenerator : MonoBehaviour
     public int minRoomSize = 8;       // 房间最小尺寸
     public int maxSplitDepth = 5;     // 最大分割深度
     public int corridorWidth = 3;     // 走廊宽度
-    
+    [Header("Room Padding")]
+    public int roomMargin = 2; // 新增：房间边距
+
     [Header("Debug")]
     public bool drawGizmos = true;    // 场景视图调试绘制
     public Color roomColor = Color.green;
@@ -17,18 +20,7 @@ public class BSPGenerator : MonoBehaviour
     private MapGrid mapGrid;          // 网格数据容器
     private List<BSPNode> leafNodes = new List<BSPNode>(); // 所有叶子节点
 
-    // BSP树节点定义
-    private class BSPNode
-    {
-        public RectInt space;         // 节点空间区域
-        public BSPNode leftChild;     // 左子节点
-        public BSPNode rightChild;    // 右子节点
-        public Room room;             // 关联的房间数据
-        public int depth;             // 节点深度
-
-        public bool IsLeaf => leftChild == null && rightChild == null;
-    }
-
+    [Button("Generate Dungeon")]
     // 生成入口
     public MapGrid GenerateDungeon()
     {
@@ -44,38 +36,52 @@ public class BSPGenerator : MonoBehaviour
 
         // 递归分割
         SplitNode(root);
-        
+
         // 生成房间
         GenerateRooms(root);
-        
+
         // 连接房间
         ConnectRooms(root);
-        
+
         return mapGrid;
     }
-
-    #region BSP分割逻辑
+    #region 改进的分割逻辑
     private void SplitNode(BSPNode node)
     {
-        // 终止条件：达到最大深度或空间太小
-        if (node.depth >= maxSplitDepth || 
-            node.space.width < minRoomSize * 2 || 
-            node.space.height < minRoomSize * 2)
+        // 终止条件：空间不足或达到深度
+        if (node.depth >= maxSplitDepth ||
+            !CanSplitFurther(node.space))
         {
             leafNodes.Add(node);
             return;
         }
 
-        // 根据长宽比决定分割方向
-        bool splitVertical = node.space.width > node.space.height;
-        if (Mathf.Abs(node.space.width - node.space.height) < minRoomSize)
-            splitVertical = Random.value > 0.5f;
+        // 动态选择分割方向（优化长宽比判断）
+        bool splitVertical = ShouldSplitVertical(node.space);
+        int minChildSize = minRoomSize * 2 + roomMargin * 4;
 
-        // 计算分割位置（保留最小空间）
-        int splitPos = splitVertical ?
-            Random.Range(node.space.x + minRoomSize, node.space.xMax - minRoomSize) :
-            Random.Range(node.space.y + minRoomSize, node.space.yMax - minRoomSize);
+        // 计算有效分割范围
+        int minSplit, maxSplit;
+        if (splitVertical)
+        {
+            minSplit = node.space.x + minChildSize;
+            maxSplit = node.space.xMax - minChildSize;
+        }
+        else
+        {
+            minSplit = node.space.y + minChildSize;
+            maxSplit = node.space.yMax - minChildSize;
+        }
 
+        // 安全分割位置计算
+        if (minSplit >= maxSplit)
+        {
+            Debug.LogWarning($"Cannot split {node.space} {(splitVertical ? "vertically" : "horizontally")}");
+            leafNodes.Add(node);
+            return;
+        }
+
+        int splitPos = Random.Range(minSplit, maxSplit);
         // 创建子节点
         node.leftChild = new BSPNode() { depth = node.depth + 1 };
         node.rightChild = new BSPNode() { depth = node.depth + 1 };
@@ -83,29 +89,29 @@ public class BSPGenerator : MonoBehaviour
         if (splitVertical)
         {
             node.leftChild.space = new RectInt(
-                node.space.x, 
-                node.space.y, 
-                splitPos - node.space.x, 
+                node.space.x,
+                node.space.y,
+                splitPos - node.space.x,
                 node.space.height);
 
             node.rightChild.space = new RectInt(
-                splitPos, 
-                node.space.y, 
-                node.space.xMax - splitPos, 
+                splitPos,
+                node.space.y,
+                node.space.xMax - splitPos,
                 node.space.height);
         }
         else
         {
             node.leftChild.space = new RectInt(
-                node.space.x, 
-                node.space.y, 
-                node.space.width, 
+                node.space.x,
+                node.space.y,
+                node.space.width,
                 splitPos - node.space.y);
 
             node.rightChild.space = new RectInt(
-                node.space.x, 
-                splitPos, 
-                node.space.width, 
+                node.space.x,
+                splitPos,
+                node.space.width,
                 node.space.yMax - splitPos);
         }
 
@@ -113,53 +119,106 @@ public class BSPGenerator : MonoBehaviour
         SplitNode(node.leftChild);
         SplitNode(node.rightChild);
     }
+    private bool CanSplitFurther(RectInt space)
+    {
+        bool canVertical = space.width >= (minRoomSize + roomMargin * 2) * 2;
+        bool canHorizontal = space.height >= (minRoomSize + roomMargin * 2) * 2;
+        return canVertical || canHorizontal;
+    }
+
+    private bool ShouldSplitVertical(RectInt space)
+    {
+        float ratio = (float)space.width / space.height;
+        if (ratio > 1.25f) return true;
+        if (ratio < 0.75f) return false;
+        return Random.value > 0.5f;
+    }
     #endregion
 
-    #region 房间生成
+    #region 房间生成（修复版）
     private void GenerateRooms(BSPNode node)
     {
         if (node.IsLeaf)
         {
-            // 计算房间尺寸（留出边距）
-            int margin = 2;
-            int roomWidth = Mathf.Max(
-                node.space.width - margin * 2, 
-                minRoomSize);
-            int roomHeight = Mathf.Max(
-                node.space.height - margin * 2, 
-                minRoomSize);
-            
-            // 随机偏移位置
-            int offsetX = Random.Range(margin, node.space.width - roomWidth - margin);
-            int offsetY = Random.Range(margin, node.space.height - roomHeight - margin);
-            
+            // 确保节点空间足够生成房间
+            if (!IsSpaceValidForRoom(node.space))
+            {
+                Debug.LogWarning($"Node {node.space} is too small for room");
+                return;
+            }
+
+            // 计算可用空间
+            int availableWidth = node.space.width - roomMargin * 2;
+            int availableHeight = node.space.height - roomMargin * 2;
+
+            // 动态调整房间尺寸
+            int roomWidth = Mathf.Clamp(
+                Random.Range(minRoomSize, availableWidth),
+                minRoomSize,
+                availableWidth
+            );
+            int roomHeight = Mathf.Clamp(
+                Random.Range(minRoomSize, availableHeight),
+                minRoomSize,
+                availableHeight
+            );
+
+            // 安全计算偏移量
+            int maxOffsetX = Mathf.Max(0, availableWidth - roomWidth);
+            int maxOffsetY = Mathf.Max(0, availableHeight - roomHeight);
+
+            int offsetX = roomMargin + (maxOffsetX > 0 ? Random.Range(0, maxOffsetX) : 0);
+            int offsetY = roomMargin + (maxOffsetY > 0 ? Random.Range(0, maxOffsetY) : 0);
+
             RectInt roomRect = new RectInt(
                 node.space.x + offsetX,
                 node.space.y + offsetY,
                 roomWidth,
-                roomHeight);
+                roomHeight
+            );
 
-            // 创建房间并注册到网格
+            // 二次边界检查
+            roomRect.x = Mathf.Clamp(
+                roomRect.x,
+                node.space.x + roomMargin,
+                node.space.xMax - roomMargin - roomWidth
+            );
+            roomRect.y = Mathf.Clamp(
+                roomRect.y,
+                node.space.y + roomMargin,
+                node.space.yMax - roomMargin - roomHeight
+            );
+
+            // 标记网格（添加边界检查）
+            for (int x = roomRect.x; x < Mathf.Min(roomRect.xMax, mapGrid.terrainGrid.GetLength(0)); x++)
+            {
+                for (int y = roomRect.y; y < Mathf.Min(roomRect.yMax, mapGrid.terrainGrid.GetLength(1)); y++)
+                {
+                    if (x >= 0 && x < mapGrid.terrainGrid.GetLength(0) &&
+                        y >= 0 && y < mapGrid.terrainGrid.GetLength(1))
+                    {
+                        mapGrid.terrainGrid[x, y] = (int)MapGrid.TileType.Floor;
+                        mapGrid.roomIdGrid[x, y] = mapGrid.rooms.Count;
+                    }
+                }
+            }
+
+            // 注册房间
             Room room = new Room(mapGrid.rooms.Count, roomRect);
             mapGrid.rooms.Add(room);
             node.room = room;
-
-            // 标记网格
-            for (int x = roomRect.x; x < roomRect.xMax; x++)
-            {
-                for (int y = roomRect.y; y < roomRect.yMax; y++)
-                {
-                    mapGrid.terrainGrid[x, y] = (int)TileType.Floor;
-                    mapGrid.roomIdGrid[x, y] = room.id;
-                    room.tiles.Add(new Vector2Int(x, y));
-                }
-            }
         }
         else
         {
             GenerateRooms(node.leftChild);
             GenerateRooms(node.rightChild);
         }
+    }
+
+    private bool IsSpaceValidForRoom(RectInt space)
+    {
+        return space.width >= minRoomSize + roomMargin * 2 &&
+               space.height >= minRoomSize + roomMargin * 2;
     }
     #endregion
 
@@ -171,7 +230,7 @@ public class BSPGenerator : MonoBehaviour
         // 获取左右子树中的随机房间
         Room roomA = GetRandomRoom(node.leftChild);
         Room roomB = GetRandomRoom(node.rightChild);
-        
+
         // 在两个房间之间生成走廊
         GenerateCorridor(roomA, roomB);
 
@@ -183,8 +242,8 @@ public class BSPGenerator : MonoBehaviour
     private Room GetRandomRoom(BSPNode node)
     {
         if (node.IsLeaf) return node.room;
-        return Random.value > 0.5f ? 
-            GetRandomRoom(node.leftChild) : 
+        return Random.value > 0.5f ?
+            GetRandomRoom(node.leftChild) :
             GetRandomRoom(node.rightChild);
     }
 
@@ -192,7 +251,7 @@ public class BSPGenerator : MonoBehaviour
     {
         Vector2Int start = a.GetCenter();
         Vector2Int end = b.GetCenter();
-        
+
         // 生成L型走廊
         if (Random.value > 0.5f)
         {
@@ -210,7 +269,7 @@ public class BSPGenerator : MonoBehaviour
     {
         for (int x = Mathf.Min(xStart, xEnd); x <= Mathf.Max(xStart, xEnd); x++)
         {
-            for (int w = -corridorWidth/2; w <= corridorWidth/2; w++)
+            for (int w = -corridorWidth / 2; w <= corridorWidth / 2; w++)
             {
                 if (mapGrid.IsInBounds(x, y + w))
                 {
@@ -224,7 +283,7 @@ public class BSPGenerator : MonoBehaviour
     {
         for (int y = Mathf.Min(yStart, yEnd); y <= Mathf.Max(yStart, yEnd); y++)
         {
-            for (int w = -corridorWidth/2; w <= corridorWidth/2; w++)
+            for (int w = -corridorWidth / 2; w <= corridorWidth / 2; w++)
             {
                 if (mapGrid.IsInBounds(x + w, y))
                 {
@@ -259,7 +318,7 @@ public class BSPGenerator : MonoBehaviour
         {
             for (int y = 0; y < mapGrid.terrainGrid.GetLength(1); y++)
             {
-                if (mapGrid.terrainGrid[x, y] == (int)TileType.Floor && 
+                if (mapGrid.terrainGrid[x, y] == (int)TileType.Floor &&
                     mapGrid.roomIdGrid[x, y] == -1)
                 {
                     Gizmos.DrawCube(
