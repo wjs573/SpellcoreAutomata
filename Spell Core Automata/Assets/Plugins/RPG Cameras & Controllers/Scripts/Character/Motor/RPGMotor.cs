@@ -571,7 +571,7 @@ namespace JohnStairs.RCC.Character.Motor {
 
         protected virtual void Awake() {
             _characterController = GetComponent<CharacterController>();
-            _animator = GetComponent<Animator>();
+            _animator = GetComponentInChildren<Animator>();
             _rpgCamera = GetComponent<IRPGCamera>();
             _player = GetComponent<IPlayer>();
             _touchedWaters = new SortedSet<Water>(new Water.WaterComparer());
