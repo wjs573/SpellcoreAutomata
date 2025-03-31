@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using JohnStairs.RCC.Character.Cam.Enums;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace JohnStairs.RCC.Character.Cam {
-    public class RPGViewFrustum : MonoBehaviour, IRPGViewFrustum {
+namespace JohnStairs.RCC.Character.Cam
+{
+    public class RPGViewFrustum : MonoBehaviour, IRPGViewFrustum
+    {
         /// <summary>
         /// Controls how camera occlusion checks are performed
         /// </summary>
@@ -132,6 +135,7 @@ namespace JohnStairs.RCC.Character.Cam {
         /// <summary>
         /// Contains the objects to fade from the last frame that are currently faded out
         /// </summary>
+        [ShowInInspector]
         protected SortedDictionary<int, GameObject> _previousObjectsToFade = new SortedDictionary<int, GameObject>();
         /// <summary>
         /// Contains all currently active fade out coroutines
@@ -146,15 +150,21 @@ namespace JohnStairs.RCC.Character.Cam {
         /// </summary>
         protected Renderer[] _characterRenderersToFade;
 
-        protected virtual void Awake() {
+        protected virtual void Awake()
+        {
             _rpgCamera = GetComponent<IRPGCamera>();
         }
 
-        protected virtual void Start() {
-            if (FadeObjectsBy == ObjectTriggerOption.Layer) {
-                for (int i = 0; i < 32; i++) {
-                    if (Utils.LayerInLayerMask(i, LayersForFading)) {
-                        if (!Utils.LayerInLayerMask(i, OccludingLayers)) {
+        protected virtual void Start()
+        {
+            if (FadeObjectsBy == ObjectTriggerOption.Layer)
+            {
+                for (int i = 0; i < 32; i++)
+                {
+                    if (Utils.LayerInLayerMask(i, LayersForFading))
+                    {
+                        if (!Utils.LayerInLayerMask(i, OccludingLayers))
+                        {
                             // Layer for fading is not part of the occluding layers => throw a warning
                             Debug.LogWarning("Layer \"" + LayerMask.LayerToName(i) + "\" is set up for fading but not part of the occluding layers! Consider adding it when you want it to fade");
                         }
@@ -162,10 +172,14 @@ namespace JohnStairs.RCC.Character.Cam {
                 }
             }
 
-            if (LookUpTrigger == ObjectTriggerOption.Layer) {
-                for (int i = 0; i < 32; i++) {
-                    if (Utils.LayerInLayerMask(i, LayersCausingLookUp)) {
-                        if (!Utils.LayerInLayerMask(i, OccludingLayers)) {
+            if (LookUpTrigger == ObjectTriggerOption.Layer)
+            {
+                for (int i = 0; i < 32; i++)
+                {
+                    if (Utils.LayerInLayerMask(i, LayersCausingLookUp))
+                    {
+                        if (!Utils.LayerInLayerMask(i, OccludingLayers))
+                        {
                             // Layer for camera look up is not part of the occluding layers => throw a warning
                             Debug.LogWarning("Layer \"" + LayerMask.LayerToName(i) + "\" is set up for causing the camera look up but is not part of the occluding layers! Consider adding it");
                         }
@@ -179,7 +193,8 @@ namespace JohnStairs.RCC.Character.Cam {
         /// </summary>
         /// <param name="from">Beginning of the view frustum</param>
         /// <param name="to">End of the view frustum</param>
-        protected virtual void Initialize(Vector3 from, Vector3 to) {
+        protected virtual void Initialize(Vector3 from, Vector3 to)
+        {
             Camera usedCamera = _rpgCamera.GetUsedCamera();
 
             Vector2 viewportExtents = _rpgCamera.GetViewportExtentsWithMargin();
@@ -201,17 +216,20 @@ namespace JohnStairs.RCC.Character.Cam {
             _shiftLowerRight = localRight * _halfWidth - localUp * _halfHeight + offset;
         }
 
-        public virtual float CheckForOcclusion(Vector3 from, Vector3 to) {
+        public virtual float CheckForOcclusion(Vector3 from, Vector3 to)
+        {
             float closestDistance = Mathf.Infinity;
 
-            if (from == to) {
+            if (from == to)
+            {
                 // No occlusion for the empty distance
                 return closestDistance;
             }
 
             // Compute the view frustum direction and length
             Vector3 direction = to - from;
-            if (direction.magnitude <= _rpgCamera.GetUsedCamera().nearClipPlane) {
+            if (direction.magnitude <= _rpgCamera.GetUsedCamera().nearClipPlane)
+            {
                 // Do not check the distance which is anyhow not rendered
                 return closestDistance;
             }
@@ -220,16 +238,20 @@ namespace JohnStairs.RCC.Character.Cam {
             // Set up the view frustum internals
             Initialize(from, to);
 
-            if (Shape == FrustumShape.Pyramid) {
+            if (Shape == FrustumShape.Pyramid)
+            {
                 closestDistance = CheckForPyramidFrustumOcclusion(from, to);
-            } else {
+            }
+            else
+            {
                 closestDistance = CheckForCuboidFrustumOcclusion(from, to);
             }
 
             return closestDistance;
         }
 
-        protected virtual float CheckForPyramidFrustumOcclusion(Vector3 from, Vector3 to) {
+        protected virtual float CheckForPyramidFrustumOcclusion(Vector3 from, Vector3 to)
+        {
             float closestDistance = Mathf.Infinity;
             Vector3 direction = to - from;
             direction.Normalize();
@@ -246,13 +268,16 @@ namespace JohnStairs.RCC.Character.Cam {
             Vector3 down = _shiftLowerLeft - _shiftUpperLeft;
             Vector3 right = _shiftUpperRight - _shiftUpperLeft;
 
-            for (int i = 1; i < maxIndex; i++) {
+            for (int i = 1; i < maxIndex; i++)
+            {
                 _rayMatrix[i, 0] = _rayMatrix[0, 0] + down * (i / (float)maxIndex);
                 _rayMatrix[i, maxIndex] = _rayMatrix[i, 0] + right;
             }
 
-            for (int i = 0; i <= maxIndex; i++) {
-                for (int j = 1; j < maxIndex; j++) {
+            for (int i = 0; i <= maxIndex; i++)
+            {
+                for (int j = 1; j < maxIndex; j++)
+                {
                     _rayMatrix[i, j] = _rayMatrix[i, 0] + right * (j / (float)maxIndex);
                 }
             }
@@ -261,26 +286,32 @@ namespace JohnStairs.RCC.Character.Cam {
             RaycastHit hit;
             Vector3 rayDirection;
             // Loop over all rays in the matrix and cast them
-            for (int i = 0; i <= maxIndex; i++) {
-                for (int j = 0; j <= maxIndex; j++) {
+            for (int i = 0; i <= maxIndex; i++)
+            {
+                for (int j = 0; j <= maxIndex; j++)
+                {
                     rayDirection = _rayMatrix[i, j] - from;
                     hitArray = Physics.RaycastAll(from, rayDirection, rayDirection.magnitude, OccludingLayers, QueryTriggerInteraction.Ignore);
 
-                    if (hitArray.Length > 0) {
+                    if (hitArray.Length > 0)
+                    {
                         // Objects got hit, sort the hits by their distance to start
                         Array.Sort(hitArray, RaycastHitComparator);
 
-                        for (int n = 0; n < hitArray.Length; n++) {
+                        for (int n = 0; n < hitArray.Length; n++)
+                        {
                             hit = hitArray[n];
 
-                            if (ObjectCanFade(hit.transform.gameObject)) {
+                            if (ObjectCanFade(hit.transform.gameObject))
+                            {
                                 // Skip objects which should be faded out
                                 continue;
                             }
 
                             // Project the distance from the frustum edge onto the camera direction
                             float projectedDistance = Vector3.Project(rayDirection.normalized * hit.distance, direction).magnitude;
-                            if (projectedDistance < closestDistance) {
+                            if (projectedDistance < closestDistance)
+                            {
                                 closestDistance = projectedDistance;
                                 // Draw debug line to the hit point
                                 Debug.DrawLine(from, hit.point, Color.red);
@@ -295,7 +326,8 @@ namespace JohnStairs.RCC.Character.Cam {
             return closestDistance;
         }
 
-        protected virtual float CheckForCuboidFrustumOcclusion(Vector3 from, Vector3 to) {
+        protected virtual float CheckForCuboidFrustumOcclusion(Vector3 from, Vector3 to)
+        {
             float closestDistance = Mathf.Infinity;
             // Cast the box which acts as the cuboid view frustum
             RaycastHit[] hitArray = BoxCastAll(from, to);
@@ -304,17 +336,20 @@ namespace JohnStairs.RCC.Character.Cam {
             Array.Sort(hitArray, RaycastHitComparator);
 
             RaycastHit hit;
-            for (int n = 0; n < hitArray.Length; n++) {
+            for (int n = 0; n < hitArray.Length; n++)
+            {
                 hit = hitArray[n];
 
-                if (hit.point == Vector3.zero) {
+                if (hit.point == Vector3.zero)
+                {
                     // Most likely due to the note described on https://docs.unity3d.com/ScriptReference/Physics.BoxCastAll.html
                     //Debug.LogWarning("There is a collider overlapping the box at the start of the sweep!");
                     // Skip this case
                     continue;
                 }
 
-                if (!ObjectCanFade(hit.transform.gameObject)) {
+                if (!ObjectCanFade(hit.transform.gameObject))
+                {
                     // Hit object should not be faded out => causes a zoom in
                     closestDistance = hit.distance;
                     // Draw debug line to the hit point
@@ -325,13 +360,16 @@ namespace JohnStairs.RCC.Character.Cam {
             return closestDistance;
         }
 
-        public virtual void HandleObjectFading(Vector3 from, Vector3 to) {
-            if (EnableCharacterFading) {
+        public virtual void HandleObjectFading(Vector3 from, Vector3 to)
+        {
+            if (EnableCharacterFading)
+            {
                 // Let the character fade in/out
                 CharacterFade(_rpgCamera.GetUsedCamera().transform.position);
             }
 
-            if (from == to) {
+            if (from == to)
+            {
                 // No occlusion for the empty distance
                 return;
             }
@@ -347,7 +385,8 @@ namespace JohnStairs.RCC.Character.Cam {
         /// <param name="from">Start point of the view frustum</param>
         /// <param name="to">End point of the view frustum</param>
         /// <returns>All game objects inside the frustum which qualify for fading out</returns>
-        protected virtual SortedDictionary<int, GameObject> GetObjectsToFade(Vector3 from, Vector3 to) {
+        protected virtual SortedDictionary<int, GameObject> GetObjectsToFade(Vector3 from, Vector3 to)
+        {
             SortedDictionary<int, GameObject> objectsToFade = new SortedDictionary<int, GameObject>();
             RaycastHit[] hitArray = BoxCastAll(from, to);
 
@@ -355,24 +394,28 @@ namespace JohnStairs.RCC.Character.Cam {
             Array.Sort(hitArray, RaycastHitComparator);
 
             RaycastHit hit;
-            for (int n = 0; n < hitArray.Length; n++) {
+            for (int n = 0; n < hitArray.Length; n++)
+            {
                 hit = hitArray[n];
 
-                if (hit.point == Vector3.zero) {
+                if (hit.point == Vector3.zero)
+                {
                     // Most likely due to the note described on https://docs.unity3d.com/ScriptReference/Physics.BoxCastAll.html                        
                     //Debug.LogWarning("There is a collider overlapping the box at the start of the sweep!");
                     // Skip this case
                     continue;
                 }
 
-                if (!ObjectCanFade(hit.transform.gameObject)) {
+                if (!ObjectCanFade(hit.transform.gameObject))
+                {
                     // Object should not be faded out => skip
                     continue;
                 }
 
                 int hitObjectID = hit.transform.GetInstanceID();
 
-                if (!objectsToFade.ContainsKey(hitObjectID)) {
+                if (!objectsToFade.ContainsKey(hitObjectID))
+                {
                     // Hit object is tagged for fading out and not yet tracked => fade it 
                     objectsToFade.Add(hitObjectID, hit.transform.gameObject);
                 }
@@ -385,7 +428,8 @@ namespace JohnStairs.RCC.Character.Cam {
         /// in the given list (anymore)
         /// </summary>
         /// <param name="objectsToFade">Objects to fade out</param>
-        protected virtual void FadeObjects(SortedDictionary<int, GameObject> objectsToFade) {
+        protected virtual void FadeObjects(SortedDictionary<int, GameObject> objectsToFade)
+        {
             // Create lists for objects to fade in or out
             List<GameObject> fadeOut = new List<GameObject>();
             List<GameObject> fadeIn = new List<GameObject>();
@@ -402,23 +446,31 @@ namespace JohnStairs.RCC.Character.Cam {
             bool jFinished = !j.MoveNext();
             bool aListFinished = iFinished || jFinished;
 
-            while (!aListFinished) {
+            while (!aListFinished)
+            {
                 int iKey = i.Current.Key;
                 int jKey = j.Current.Key;
 
-                if (iKey == jKey) {
+                if (iKey == jKey)
+                {
                     iFinished = !i.MoveNext();
                     jFinished = !j.MoveNext();
                     aListFinished = iFinished || jFinished;
-                } else if (iKey < jKey) {
-                    if (i.Current.Value != null) {
+                }
+                else if (iKey < jKey)
+                {
+                    if (i.Current.Value != null)
+                    {
                         fadeIn.Add(i.Current.Value);
                     }
                     aListFinished = !i.MoveNext();
                     iFinished = true;
                     jFinished = false;
-                } else {
-                    if (j.Current.Value != null) {
+                }
+                else
+                {
+                    if (j.Current.Value != null)
+                    {
                         fadeOut.Add(j.Current.Value);
                     }
                     aListFinished = !j.MoveNext();
@@ -427,15 +479,22 @@ namespace JohnStairs.RCC.Character.Cam {
                 }
             }
 
-            if (iFinished && !jFinished) {
-                do {
-                    if (j.Current.Value != null) {
+            if (iFinished && !jFinished)
+            {
+                do
+                {
+                    if (j.Current.Value != null)
+                    {
                         fadeOut.Add(j.Current.Value);
                     }
                 } while (j.MoveNext());
-            } else if (!iFinished && jFinished) {
-                do {
-                    if (i.Current.Value != null) {
+            }
+            else if (!iFinished && jFinished)
+            {
+                do
+                {
+                    if (i.Current.Value != null)
+                    {
                         fadeIn.Add(i.Current.Value);
                     }
                 } while (i.MoveNext());
@@ -452,14 +511,17 @@ namespace JohnStairs.RCC.Character.Cam {
         /// Starts to fade out the given game objects
         /// </summary>
         /// <param name="objects">Game objects to fade out</param>
-        protected virtual void StartFadingOutObjects(List<GameObject> objects) {
-            foreach (GameObject o in objects) {
+        protected virtual void StartFadingOutObjects(List<GameObject> objects)
+        {
+            foreach (GameObject o in objects)
+            {
                 int objectID = o.transform.GetInstanceID();
                 // Create a new coroutine for fading out the object
                 IEnumerator coroutine = FadeObjectCoroutine(FadeOutAlpha, FadeOutDuration, o);
 
                 // Check if there is a running fade in coroutine for this object
-                if (_fadeInCoroutines.TryGetValue(objectID, out IEnumerator runningCoroutine)) {
+                if (_fadeInCoroutines.TryGetValue(objectID, out IEnumerator runningCoroutine))
+                {
                     // Stop the already running coroutine
                     StopCoroutine(runningCoroutine);
                     // Remove it from the fade in coroutines
@@ -476,14 +538,17 @@ namespace JohnStairs.RCC.Character.Cam {
         /// Starts to fade in the given game objects
         /// </summary>
         /// <param name="objects">Game objects to fade back in</param>
-        protected virtual void StartFadingInObjects(List<GameObject> objects) {
-            foreach (GameObject o in objects) {
+        protected virtual void StartFadingInObjects(List<GameObject> objects)
+        {
+            foreach (GameObject o in objects)
+            {
                 int objectID = o.transform.GetInstanceID();
                 // Create a new coroutine for fading in the object
                 IEnumerator coroutine = FadeObjectCoroutine(FadeInAlpha, FadeInDuration, o);
 
                 // Check if there is a running fade out coroutine for this object
-                if (_fadeOutCoroutines.TryGetValue(objectID, out IEnumerator runningCoroutine)) {
+                if (_fadeOutCoroutines.TryGetValue(objectID, out IEnumerator runningCoroutine))
+                {
                     // Stop the already running coroutine
                     StopCoroutine(runningCoroutine);
                     // Remove it from the fade out coroutines
@@ -502,7 +567,8 @@ namespace JohnStairs.RCC.Character.Cam {
         /// <param name="a">Left-side RaycastHit</param>
         /// <param name="b">Right-side RaycastHit</param>
         /// <returns>A signed number indicating the relative values of a and b</returns>
-		protected virtual int RaycastHitComparator(RaycastHit a, RaycastHit b) {
+		protected virtual int RaycastHitComparator(RaycastHit a, RaycastHit b)
+        {
             return a.distance.CompareTo(b.distance);
         }
 
@@ -511,12 +577,18 @@ namespace JohnStairs.RCC.Character.Cam {
         /// </summary>
         /// <param name="obj">Object to check</param>
         /// <returns>True if the object should be faded, otherwise false</returns>
-        protected virtual bool ObjectCanFade(GameObject obj) {
-            if (FadeObjectsBy == ObjectTriggerOption.Tag) {
+        protected virtual bool ObjectCanFade(GameObject obj)
+        {
+            if (FadeObjectsBy == ObjectTriggerOption.Tag)
+            {
                 return TagsForFading.Contains(obj.transform.tag);
-            } else if (FadeObjectsBy == ObjectTriggerOption.Layer) {
+            }
+            else if (FadeObjectsBy == ObjectTriggerOption.Layer)
+            {
                 return Utils.LayerInLayerMask(obj.layer, LayersForFading);
-            } else {
+            }
+            else
+            {
                 return obj.GetComponent<FadeOut>();
             }
         }
@@ -526,12 +598,18 @@ namespace JohnStairs.RCC.Character.Cam {
         /// </summary>
         /// <param name="obj">Object to check</param>
         /// <returns>True if the object causes a look up, otherwise false</returns>
-        protected virtual bool IsObjectCausingLookUp(GameObject obj) {
-            if (LookUpTrigger == ObjectTriggerOption.Tag) {
+        protected virtual bool IsObjectCausingLookUp(GameObject obj)
+        {
+            if (LookUpTrigger == ObjectTriggerOption.Tag)
+            {
                 return TagsCausingLookUp.Contains(obj.transform.tag);
-            } else if (LookUpTrigger == ObjectTriggerOption.Layer) {
+            }
+            else if (LookUpTrigger == ObjectTriggerOption.Layer)
+            {
                 return Utils.LayerInLayerMask(obj.layer, LayersCausingLookUp);
-            } else {
+            }
+            else
+            {
                 return obj.GetComponent<CauseCameraLookUp>() != null;
             }
         }
@@ -542,7 +620,8 @@ namespace JohnStairs.RCC.Character.Cam {
         /// <param name="from">Beginning of the detecting box</param>
         /// <param name="to">End of the detecting box</param>
         /// <returns>All ray cast hits between from and to</returns>
-        protected virtual RaycastHit[] BoxCastAll(Vector3 from, Vector3 to) {
+        protected virtual RaycastHit[] BoxCastAll(Vector3 from, Vector3 to)
+        {
             Vector3 direction = to - from;
             float maxDistance = direction.magnitude;
             direction.Normalize();
@@ -564,15 +643,19 @@ namespace JohnStairs.RCC.Character.Cam {
         /// <param name="duration">Duration for fading</param>
         /// <param name="o">Game object to fade</param>
         /// <returns>Coroutine object</returns>
-		protected virtual IEnumerator FadeObjectCoroutine(float target, float duration, GameObject o) {
+		protected virtual IEnumerator FadeObjectCoroutine(float target, float duration, GameObject o)
+        {
             bool continueFading = true;
             int objectID = o.transform.GetInstanceID();
             // Get all renderers of object o
             Renderer[] objectRenderers = o.transform.GetComponentsInChildren<Renderer>();
 
-            if (objectRenderers.Length > 0) {
-                if (target == FadeOutAlpha) {
-                    foreach (Renderer renderer in objectRenderers) {
+            if (objectRenderers.Length > 0)
+            {
+                if (target == FadeOutAlpha)
+                {
+                    foreach (Renderer renderer in objectRenderers)
+                    {
                         Utils.DisableZWrite(renderer);
                     }
                 }
@@ -580,30 +663,38 @@ namespace JohnStairs.RCC.Character.Cam {
                 // There are renderers to fade, create a current velocity array for each renderer fade
                 float[] currentVelocity = new float[objectRenderers.Length];
 
-                while (continueFading) {
-                    for (int i = 0; i < objectRenderers.Length; i++) {
-                        if (!o) {
+                while (continueFading)
+                {
+                    for (int i = 0; i < objectRenderers.Length; i++)
+                    {
+                        if (!o)
+                        {
                             // Object was destroyed in the meantime
                             continueFading = false;
                             break;
                         }
 
                         Renderer renderer = objectRenderers[i];
-                        if (!renderer) {
+                        if (!renderer)
+                        {
                             continue;
                         }
 
                         Material[] mats = renderer.materials;
                         float alpha = -1.0f;
 
-                        foreach (Material material in mats) {
+                        foreach (Material material in mats)
+                        {
                             // Check for standard (built-in) render pipeline or Universal Render Pipeline color properties
-                            if (material.HasProperty("_Color") || material.HasProperty("_BaseColor")) {
-                                if (alpha == -1.0f) {
+                            if (material.HasProperty("_Color") || material.HasProperty("_BaseColor"))
+                            {
+                                if (alpha == -1.0f)
+                                {
                                     // Compute the alpha only once
                                     alpha = Mathf.SmoothDamp(material.color.a, target, ref currentVelocity[i], duration);
 
-                                    if (Utils.IsAlmostEqual(alpha, target, 0.01f)) {
+                                    if (Utils.IsAlmostEqual(alpha, target, 0.01f))
+                                    {
                                         // The current alpha is almost equal to the target alpha value to => stop fading
                                         alpha = target;
                                         continueFading = false;
@@ -624,8 +715,10 @@ namespace JohnStairs.RCC.Character.Cam {
                     yield return null;
                 } // end of while loop
 
-                if (target == FadeInAlpha) {
-                    foreach (Renderer renderer in objectRenderers) {
+                if (target == FadeInAlpha)
+                {
+                    foreach (Renderer renderer in objectRenderers)
+                    {
                         Utils.EnableZWrite(renderer);
                     }
                 }
@@ -639,12 +732,14 @@ namespace JohnStairs.RCC.Character.Cam {
         /// Lets the character fade depending on the position of the used camera
         /// </summary>
         /// <param name="cameraPosition">Camera position for calculating the alpha to which the character should fade</param>
-		protected virtual void CharacterFade(Vector3 cameraPosition) {
+		protected virtual void CharacterFade(Vector3 cameraPosition)
+        {
             UpdateCharacterRenderersToFade();
 
             Vector3 closestPointToCharacter = transform.position;
             Collider collider = GetComponent<Collider>();
-            if (collider) {
+            if (collider)
+            {
                 closestPointToCharacter = collider.ClosestPointOnBounds(cameraPosition);
             }
 
@@ -656,9 +751,11 @@ namespace JohnStairs.RCC.Character.Cam {
 
             float alpha = Mathf.SmoothStep(CharacterFadeOutAlpha, 1.0f, t);
             // Go through all renderers found for the character
-            foreach (Renderer renderer in _characterRenderersToFade) {
+            foreach (Renderer renderer in _characterRenderersToFade)
+            {
                 // Go through all their materials
-                foreach (Material material in renderer.materials) {
+                foreach (Material material in renderer.materials)
+                {
                     // Adjust their color's alpha value accordingly
                     Color color = material.color;
                     color.a = alpha;
@@ -673,16 +770,21 @@ namespace JohnStairs.RCC.Character.Cam {
         /// <summary>
         /// Updates the _characterRenderersToFade, has to be called when the character renderers changed and character fading is on
         /// </summary>
-		protected virtual void UpdateCharacterRenderersToFade() {
+		protected virtual void UpdateCharacterRenderersToFade()
+        {
             List<Renderer> renderers = new List<Renderer>();
             Renderer[] temp = GetComponentsInChildren<Renderer>();
 
             bool addRenderer = true;
-            foreach (Renderer renderer in temp) {
-                foreach (Material material in renderer.materials) {
-                    if (material.HasProperty("_Color") || material.HasProperty("_BaseColor")) {
+            foreach (Renderer renderer in temp)
+            {
+                foreach (Material material in renderer.materials)
+                {
+                    if (material.HasProperty("_Color") || material.HasProperty("_BaseColor"))
+                    {
                         // Add only if the color property is available
-                        if (addRenderer) {
+                        if (addRenderer)
+                        {
                             addRenderer = false;
                             renderers.Add(renderer);
                         }
@@ -695,22 +797,28 @@ namespace JohnStairs.RCC.Character.Cam {
             _characterRenderersToFade = renderers.ToArray();
         }
 
-        protected virtual void SetMaterialColor(Material material, string name, Color color) {
-            if (material.HasProperty(name)) {
+        protected virtual void SetMaterialColor(Material material, string name, Color color)
+        {
+            if (material.HasProperty(name))
+            {
                 material.SetColor(name, color);
             }
         }
 
-        public virtual FrustumShape GetShape() {
+        public virtual FrustumShape GetShape()
+        {
             return Shape;
         }
 
-        public virtual LayerMask GetOccludingLayers() {
+        public virtual LayerMask GetOccludingLayers()
+        {
             return OccludingLayers;
         }
 
-        public virtual bool IsTouchingGround() {
-            if (!EnableCameraLookUp) {
+        public virtual bool IsTouchingGround()
+        {
+            if (!EnableCameraLookUp)
+            {
                 return false;
             }
 
@@ -719,8 +827,28 @@ namespace JohnStairs.RCC.Character.Cam {
                     && IsObjectCausingLookUp(hitInfo.transform.gameObject);
         }
 
-        public virtual void DrawFrustum(Vector3 from, Vector3 to, bool withCameraPlane = false) {
-            if (from == to) {
+        /// <summary>
+        /// 提供给外部获取当前帧需要淡出的物体列表
+        /// </summary>
+        // RPGViewFrustum.cs
+        public List<GameObject> GetObjectsToFade()
+        {
+            List<GameObject> validObjects = new List<GameObject>();
+            foreach (var pair in _previousObjectsToFade)
+            {
+                // 跳过无效或已销毁的物体
+                if (pair.Value != null && pair.Value.activeInHierarchy)
+                {
+                    validObjects.Add(pair.Value);
+                }
+            }
+            return validObjects;
+        }
+
+        public virtual void DrawFrustum(Vector3 from, Vector3 to, bool withCameraPlane = false)
+        {
+            if (from == to)
+            {
                 return;
             }
 
@@ -741,12 +869,15 @@ namespace JohnStairs.RCC.Character.Cam {
             Debug.DrawLine(upperRight, lowerRight, frustumPlaneColor);
             Debug.DrawLine(lowerLeft, lowerRight, frustumPlaneColor);
 
-            if (Shape == FrustumShape.Pyramid) {
+            if (Shape == FrustumShape.Pyramid)
+            {
                 Debug.DrawLine(upperLeft, from, frustumEdgeColor);
                 Debug.DrawLine(upperRight, from, frustumEdgeColor);
                 Debug.DrawLine(lowerLeft, from, frustumEdgeColor);
                 Debug.DrawLine(lowerRight, from, frustumEdgeColor);
-            } else {
+            }
+            else
+            {
                 // Calculate the near frustum plane at the start position (e.g. pivot position)
                 upperLeft = from + _shiftUpperLeft;
                 upperRight = from + _shiftUpperRight;
@@ -765,7 +896,8 @@ namespace JohnStairs.RCC.Character.Cam {
                 Debug.DrawRay(lowerRight, frustumDirection, frustumEdgeColor);
             }
 
-            if (withCameraPlane) {
+            if (withCameraPlane)
+            {
                 // Calculate the near frustum plane at the current camera position
                 Vector3 cameraPosition = _rpgCamera.GetUsedCamera().transform.position;
                 upperLeft = cameraPosition + _shiftUpperLeft;
