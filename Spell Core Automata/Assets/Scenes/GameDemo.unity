@@ -6976,6 +6976,9 @@ GameObject:
   - component: {fileID: 1057113967}
   - component: {fileID: 1057113968}
   - component: {fileID: 1057113969}
+  - component: {fileID: 1057113972}
+  - component: {fileID: 1057113971}
+  - component: {fileID: 1057113970}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -7039,6 +7042,48 @@ MonoBehaviour:
   fadeDuration: 0.3
   showDebugRays: 1
   debugColor: {r: 1, g: 0.8, b: 0, a: 0.25}
+--- !u!114 &1057113970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057113966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cac54da3de214f5c97c1af6d3289c7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundDatabase: {fileID: 0}
+--- !u!114 &1057113971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057113966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85eda973c01b0384ab0f238bcd91ebf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  database: {fileID: 0}
+  cinemachineFollow: {fileID: 0}
+  ObjectPooler: {fileID: 0}
+  IsInBattle: 0
+  root: {fileID: 0}
+--- !u!114 &1057113972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057113966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7222e6a8bbd573e47abddfcae80c2f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1058812540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15465,6 +15510,10 @@ GameObject:
   - component: {fileID: 5501150385032575273}
   - component: {fileID: 3776128423584606244}
   - component: {fileID: 3776128423584606243}
+  - component: {fileID: 3776128423584606248}
+  - component: {fileID: 3776128423584606247}
+  - component: {fileID: 3776128423584606246}
+  - component: {fileID: 3776128423584606245}
   m_Layer: 8
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -15503,6 +15552,66 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 512
+--- !u!114 &3776128423584606245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3776128423584606242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcfd5c4d340d44fd5bd9d7853f242016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Skill_Inventory: {fileID: 0}
+  Equipped_Skill_Inventory: {fileID: 0}
+  Equipped_ComboSpell_Inventory: {fileID: 0}
+  FaBao_Equippment_Inventory: {fileID: 0}
+  Main_inventory: {fileID: 0}
+  ItemDatabase: {fileID: 0}
+  Name: 
+  exp: 0
+  coin: 0
+--- !u!114 &3776128423584606246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3776128423584606242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1072c85e104e6254fac19fe01f81295e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 0
+--- !u!114 &3776128423584606247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3776128423584606242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2fc4c4ceaa677949bfa5fb84f45c417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3776128423584606248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3776128423584606242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc2de3ca93f6584eab9ede441249a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BufferAnimation: 
+  timeScale: 1
 --- !u!1001 &3799422193440694963
 PrefabInstance:
   m_ObjectHideFlags: 0

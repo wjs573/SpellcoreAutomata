@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 346601559ddfc7643b4965303fe80519
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183370
+  packageName: Feel
+  packageVersion: 5.4
+  assetPath: Assets/Feel/FeelDemos/Tactical/Animations/FeelTacticalAnimator.controller
+  uploadId: 729165
