@@ -9,8 +9,6 @@ namespace JinShan
     {
 
         public InventoryObject inventory;
-
-
         public Dictionary<GameObject, InventorySlot> slotsOnInterface = new Dictionary<GameObject, InventorySlot>();
         void Start()
         {
@@ -28,7 +26,7 @@ namespace JinShan
 
         private void OnSlotUpdate(InventorySlot _slot)
         {
-            if (_slot.item.Id >= 0)
+            if (_slot.item.Id != "")
             {
                 _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.ItemObject.uiDisplay;
                 _slot.slotDisplay.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
@@ -93,7 +91,7 @@ namespace JinShan
         {
             GameObject tempItem = null;
 
-            if (slotsOnInterface[obj].item.Id >= 0)
+            if (slotsOnInterface[obj].item.Id != "")
             {
                 tempItem = new GameObject();
                 var rt = tempItem.AddComponent<RectTransform>();
@@ -173,7 +171,7 @@ namespace JinShan
         {
             foreach (KeyValuePair<GameObject, InventorySlot> _slot in _slotsOnInterface)
             {
-                if (_slot.Value.item.Id >= 0)
+                if (_slot.Value.item.Id != "")
                 {
                     _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _slot.Value.ItemObject.uiDisplay;
                     _slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);

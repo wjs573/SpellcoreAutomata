@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public void EquipWand(int index)
     {
         InventorySlot inventorySlot = mainCharacter.FaBao_Equippment_Inventory.GetSlots[index];
-        if (inventorySlot.item == null || inventorySlot.item.Id <= -1 || inventorySlot.amount == 0)
+        if (inventorySlot.item == null || inventorySlot.item.Id == "" || inventorySlot.amount == 0)
         {
             return;
         }
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
         InventorySlot[] skillSlots = mainCharacter.Equipped_Skill_Inventory.Container.Slots;
         for (int i = 0; i < 4; i++)
         {
-            if (skillSlots[i].item != null && skillSlots[i].item.Id >= -1)
+            if (skillSlots[i].item != null && skillSlots[i].item.Id == "")
             {
                 skillId[i] = skillSlots[i].item.GetSkillModel().id;
             }

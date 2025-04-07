@@ -132,7 +132,7 @@ public class SpellCombinationManager : MonoBehaviour
         List<Item> spells = new List<Item>();
         foreach (Item card in Hand)
         {
-            if (card == null || card.Id < 0)
+            if (card == null || card.Id == "")
             {
                 continue;
             }
@@ -410,7 +410,7 @@ public class SpellCombinationManager : MonoBehaviour
         //空置的slot放置普通攻击
         foreach (InventorySlot slot in spellInventory.GetSlots)
         {
-            if (slot.amount > 0 && slot.item != null && slot.item.Id > -1)
+            if (slot.amount > 0 && slot.item != null && slot.item.Id != "")
             {
                 DrawPile.Enqueue(slot.item);
                 triggerDict[slot.item] = false;

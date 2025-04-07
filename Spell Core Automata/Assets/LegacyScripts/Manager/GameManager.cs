@@ -10,7 +10,6 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     public ItemDatabaseObject database;
-    public CinemachineFollow cinemachineFollow;
     //对象池组件
     public MMMultipleObjectPooler ObjectPooler;
 
@@ -83,11 +82,11 @@ public class GameManager : MonoSingleton<GameManager>
     /// </summary>
     public RandomInt generatedIds;
 
-    //已登场的角色，包括主角、敌人、法宝
+    //已登场的角色，包括主角、敌人
     private List<GameObject> characters;
 
     /// <summary>
-    /// 获取除去法宝的所有character
+    /// 获取所有character
     /// </summary>
     public List<GameObject> Characters
     {
@@ -97,7 +96,6 @@ public class GameManager : MonoSingleton<GameManager>
             {
                 return null;
             }
-            //去除掉法宝
             List<GameObject> _characters = new List<GameObject>();
             for (int i = 0; i < characters.Count; i++)
             {
@@ -126,11 +124,9 @@ public class GameManager : MonoSingleton<GameManager>
         root = GameObject.Find("GameObjectLayer");
 
         //初始化策划填表
-        //DesignerTables.Buff.Initialize();
         DesignerTables.AoE.Initialize();
         DesignerTables.Bullet.Initialize();
         DataLaserModel.Init();
-        DesignerScripts.Timeline.Initialize();
         DesignerTables.Timeline.Initialize();
         DesignerTables.Skill.Initialize();
         DesignerTables.BattleSpawn.Initialize();
@@ -183,16 +179,11 @@ public class GameManager : MonoSingleton<GameManager>
                 200, 100, 15,
                 1.5f, 0.25f, 0.05f, 0.25f, 0.4f));
 
-        //给主角添加buff
-        AddBuffInfo buffInfo = new AddBuffInfo(DesignerTables.Buff.data["BaseRecover"], mainActor, mainActor, 1, 999);
-        MainCharacter.Instance.GetComponent<ChaState>().AddBuff(buffInfo);
-
         //给主角添加一个寻敌组件
         //目前是准备给法宝调用
         //法宝获得最近的敌人
         MainCharacter.Instance.gameObject.AddComponent<UnitGetTarget>();
 
-        //镜头跟随主角
         ChaState mcs = MainCharacter.Instance.GetComponent<ChaState>();
 
         //添加法宝
@@ -221,11 +212,8 @@ public class GameManager : MonoSingleton<GameManager>
 
         //学习技能
         MainCharacter.Instance.Equipped_Skill_Inventory.Clear();
-
         MainCharacter.Instance.Equipped_ComboSpell_Inventory.Clear();
-
         MainCharacter.Instance.Skill_Inventory.Clear();
-
         for (int i = 0; i < database.ItemObjects.Length; i++)
         {
             Item skill = new Item(database.ItemObjects[i]);

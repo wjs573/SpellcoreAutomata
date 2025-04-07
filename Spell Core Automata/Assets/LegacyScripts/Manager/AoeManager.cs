@@ -47,7 +47,7 @@ public class AoeManager : MonoSingleton<AoeManager>
 
     private void CreateIndicator(GameObject aoe, float radius)
     {
-        if (!showIndicators) return; // 不显示指示器
+        if (!showIndicators || aoeIndicatorPrefab == null) return; // 不显示指示器
         GameObject indicator = Instantiate(aoeIndicatorPrefab, aoe.transform.position, Quaternion.identity);
         indicator.transform.localScale = new Vector3(radius * 2, 1, radius * 2); // 根据AOE半径调整指示器大小
         aoeIndicators[aoe] = indicator;
@@ -286,12 +286,12 @@ public class AoeManager : MonoSingleton<AoeManager>
                 //如果该aoe的美术特效没有播放完成
                 //则将该aoe的美术特效移到aoemanager下，并播放完成后再销毁
                 SightEffect sightEffect = aoe[i].GetComponentInChildren<SightEffect>();
-                if(sightEffect!=null&&sightEffect.duration-aoeState.timeElapsed > 0)
+                if (sightEffect != null && sightEffect.duration - aoeState.timeElapsed > 0)
                 {
                     sightEffect.transform.SetParent(transform);
                     sightEffect.gameObject.AddComponent<UnitRemover>();
-                    sightEffect.GetComponentInChildren<UnitRemover>().duration = sightEffect.duration-aoeState.timeElapsed;
-                } 
+                    sightEffect.GetComponentInChildren<UnitRemover>().duration = sightEffect.duration - aoeState.timeElapsed;
+                }
                 Destroy(aoe[i]);
                 continue;
             }

@@ -72,8 +72,6 @@ public class LaserManager : MonoSingleton<LaserManager>
                 }
             }
 
-
-
             // 处理激光的碰撞和效果
             LineRenderer laserRenderer = laserState.Laser;
             Vector4 length = laserState.Length;

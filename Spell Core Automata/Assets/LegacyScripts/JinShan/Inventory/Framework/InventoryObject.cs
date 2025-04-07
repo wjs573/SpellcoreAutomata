@@ -101,7 +101,7 @@ namespace JinShan
                 return false;
             }
             //如果要添加的是空物品 直接添加成功
-            if (_item == null || _item.itemObject == null || _item.Id <= -1)
+            if (_item == null || _item.itemObject == null || _item.Id == "")
             {
                 return true;
             }
@@ -110,7 +110,7 @@ namespace JinShan
             InventorySlot slot = FindItemOnInventory(_item);
 
             //如果设置了待添加的inventorySlot且为空
-            if (_targetSlot != null && (_targetSlot.item == null || _targetSlot.item.Id <= -1))
+            if (_targetSlot != null && (_targetSlot.item == null || _targetSlot.item.Id == ""))
             {
                 _targetSlot.UpdateSlot(_item, _amount);
                 return true;
@@ -175,7 +175,7 @@ namespace JinShan
                 int counter = 0;
                 for (int i = 0; i < GetSlots.Length; i++)
                 {
-                    if (GetSlots[i].item == null || GetSlots[i].item.Id <= -1)
+                    if (GetSlots[i].item == null || GetSlots[i].item.Id == "")
                     {
                         counter++;
                     }
@@ -188,7 +188,7 @@ namespace JinShan
         {
             for (int i = 0; i < GetSlots.Length; i++)
             {
-                if (GetSlots[i].item == null || GetSlots[i].item.Id <= -1)
+                if (GetSlots[i].item == null || GetSlots[i].item.Id == "")
                 {
                     GetSlots[i].UpdateSlot(_item, _amount);
                     return GetSlots[i];
@@ -311,7 +311,7 @@ namespace JinShan
         {
             get
             {
-                if (item != null && item.Id >= 0)
+                if (item != null && item.Id != "")
                 {
                     return item.itemObject;
                 }
@@ -368,8 +368,8 @@ namespace JinShan
 
         public bool SwapInventorySlot(InventorySlot slot)
         {
-            bool isSlot1Empty = (this.item == null || this.item.Id <= -1);
-            bool isSlot2Empty = (slot.item == null || slot.item.Id <= -1);
+            bool isSlot1Empty = (this.item == null || this.item.Id == "");
+            bool isSlot2Empty = (slot.item == null || slot.item.Id == "");
             //slot1和slot2都为空
             if (isSlot1Empty && isSlot2Empty)
             {
@@ -419,7 +419,7 @@ namespace JinShan
         public bool CanPlaceInSlot(ItemObject _itemObject)
         {
             //如果没有slot 类型限制 返回true
-            if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.data.Id < 0)
+            if (AllowedItems.Length <= 0 || _itemObject == null || _itemObject.data.Id == "")
             {
                 return true;
             }

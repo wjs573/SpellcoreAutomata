@@ -52,7 +52,7 @@ public class UIDisplaySlot : MonoBehaviour
     public void SetContent(InventorySlot inventorySlot)
     {
         this.inventorySlot = inventorySlot;
-        if (inventorySlot.item == null || inventorySlot.item.Id == -1)
+        if (inventorySlot.item == null || inventorySlot.item.Id == "")
         {
             _number.text = "";
             _icon.sprite = null;

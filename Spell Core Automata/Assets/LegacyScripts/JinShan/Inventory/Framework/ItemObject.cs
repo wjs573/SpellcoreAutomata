@@ -99,7 +99,7 @@ namespace JinShan
         /// <summary>
         /// 物品在数据库中的序号
         /// </summary>
-        public int Id = -1;
+        public string Id = "";
 
         /// <summary>
         /// 物品品级
@@ -132,7 +132,7 @@ namespace JinShan
         public Item()
         {
             Name = "";
-            Id = -1;
+            Id = "";
             itemObject = null;
         }
 
@@ -352,7 +352,6 @@ namespace JinShan
             Item cloneItem = new Item();
 
             cloneItem.Name = this.Name;
-
             cloneItem.itemObject = this.itemObject;
             cloneItem.Id = this.itemObject.data.Id;
             cloneItem.Rank = this.itemObject.data.Rank;
@@ -368,14 +367,18 @@ namespace JinShan
         }
     }
 
+    public interface IModifiers
+    {
+        void AddValue(ref int baseValue);
+    }
+
     [System.Serializable]
-    public class ItemBuff : Imodifiers
+    public class ItemBuff : IModifiers
     {
         [InlineProperty]
         [HideLabel]
         public Attributes attribute;
 
-        [HideInInspector]
         public int value; // 不在编辑器中显示，只在运行时使用
 
         [HorizontalGroup("Range"), LabelWidth(50)]
