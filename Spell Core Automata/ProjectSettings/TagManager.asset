@@ -7,6 +7,9 @@ TagManager:
   - Environment
   - FadeOut
   - Missile
+  - Laser
+  - Bullet
+  - AoE
   layers:
   - Default
   - TransparentFX

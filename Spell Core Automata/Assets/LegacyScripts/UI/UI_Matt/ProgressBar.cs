@@ -37,7 +37,7 @@ public class ProgressBar : MonoBehaviour
     void Update()
     {
         GetCurrentFill();
-        UpdateTicks();
+        //UpdateTicks();
     }
 
     void GetCurrentFill()

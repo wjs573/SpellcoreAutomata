@@ -39,14 +39,6 @@ public class UnitFeedback : MonoBehaviour
 
     public void Init()
     {
-        MMBlink targetBlink = GetComponentInChildren<ViewContainer>().transform.GetChild(0).GetComponent<MMBlink>();
-        if (targetBlink != null)
-        {
-            damageFeedbacks.GetComponent<MMFeedbackBlink>().TargetBlink = targetBlink;
-        }
-        else
-        {
-            damageFeedbacks.GetComponent<MMFeedbackBlink>().Active = false;
-        }
+
     }
 }

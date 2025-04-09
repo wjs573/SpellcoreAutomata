@@ -8,12 +8,6 @@ using UnityEngine;
 
 namespace JinShan
 {
-    public enum InterfaceType
-    {
-        Inventory,
-        Equipment,
-        Skill
-    }
 
     public delegate void EquipHandler(int equippedIndex);
 
@@ -23,7 +17,6 @@ namespace JinShan
     {
         public string savePath;
         public ItemDatabaseObject database;
-        public InterfaceType type;
         public Inventory Container;
 
         public InventoryObject()

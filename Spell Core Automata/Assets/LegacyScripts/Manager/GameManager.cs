@@ -80,7 +80,7 @@ public class GameManager : MonoSingleton<GameManager>
     /// <summary>
     /// id生成器
     /// </summary>
-    public RandomInt generatedIds;
+    protected RandomInt generatedIds;
 
     //已登场的角色，包括主角、敌人
     private List<GameObject> characters;
@@ -119,9 +119,6 @@ public class GameManager : MonoSingleton<GameManager>
     {
         //初始化id生成器
         generatedIds = RandomInt.LoadData();
-
-        //这是生成游戏物体的父物体
-        root = GameObject.Find("GameObjectLayer");
 
         //初始化策划填表
         DesignerTables.AoE.Initialize();
@@ -189,14 +186,14 @@ public class GameManager : MonoSingleton<GameManager>
         //添加法宝
         MainCharacter.Instance.FaBao_Equippment_Inventory.Clear();
         MainCharacter.Instance.Main_inventory.Clear();
-        for (int i = 0; i < database.ItemObjects.Length; i++)
-        {
-            if (database.ItemObjects[i].type == ItemType.法宝)
-            {
-                Item fabao = new Item(database.ItemObjects[i]);
-                MainCharacter.Instance.Main_inventory.AddItem(fabao, 1);
-            }
-        }
+        // for (int i = 0; i < database.ItemObjects.Length; i++)
+        // {
+        //     if (database.ItemObjects[i].type == ItemType.法宝)
+        //     {
+        //         Item fabao = new Item(database.ItemObjects[i]);
+        //         MainCharacter.Instance.Main_inventory.AddItem(fabao, 1);
+        //     }
+        // }
 
         //设置背包
         mcs.FaBao_Equippment_Inventory = MainCharacter.Instance.FaBao_Equippment_Inventory;
@@ -214,16 +211,16 @@ public class GameManager : MonoSingleton<GameManager>
         MainCharacter.Instance.Equipped_Skill_Inventory.Clear();
         MainCharacter.Instance.Equipped_ComboSpell_Inventory.Clear();
         MainCharacter.Instance.Skill_Inventory.Clear();
-        for (int i = 0; i < database.ItemObjects.Length; i++)
-        {
-            Item skill = new Item(database.ItemObjects[i]);
-            if (skill.itemObject.type == ItemType.技能 || skill.itemObject.type == ItemType.技能强化 ||
-                skill.itemObject.type == ItemType.触发器)
-            {
-                mcs.LearnSkill(skill.GetSkillModel());
-                MainCharacter.Instance.Main_inventory.AddItem(skill, 1);
-            }
-        }
+        // for (int i = 0; i < database.ItemObjects.Length; i++)
+        // {
+        //     Item skill = new Item(database.ItemObjects[i]);
+        //     if (skill.itemObject.type == ItemType.技能 || skill.itemObject.type == ItemType.技能强化 ||
+        //         skill.itemObject.type == ItemType.触发器)
+        //     {
+        //         mcs.LearnSkill(skill.GetSkillModel());
+        //         MainCharacter.Instance.Main_inventory.AddItem(skill, 1);
+        //     }
+        // }
         //添加技能组合组件
         mcs.gameObject.AddComponent<SpellCombinationManagerContainer>();
     }
@@ -243,26 +240,6 @@ public class GameManager : MonoSingleton<GameManager>
         //初始化刷怪管理器
         BattleSpawnData battleSpawnData = DesignerTables.BattleSpawn.data["Level2"];
         MobSpawnManager.Instance.BeginSpawning(battleSpawnData);
-    }
-
-    public void StartChessPieceBattleMode()
-    {
-        IsInBattle = true;
-        //创建地图
-        SceneVariants.RandomMap(36, 36, 1);
-        MainCharacter.Instance.Skill_Inventory.Clear();
-        for (int i = 0; i < database.ItemObjects.Length; i++)
-        {
-            Item skill = new Item(database.ItemObjects[i]);
-            if (skill.itemObject.type == ItemType.技能 || skill.itemObject.type == ItemType.技能强化 ||
-                skill.itemObject.type == ItemType.触发器)
-            {
-                MainCharacter.Instance.Skill_Inventory.AddItem(skill, 1);
-            }
-        }
-        //初始化人物表
-        characters = new List<GameObject>();
-
     }
 
     /// <summary>
@@ -330,27 +307,6 @@ public class GameManager : MonoSingleton<GameManager>
 
         return go;
     }
-
-
-    //根据global.map制作地图的prefabs
-    private void CreateMapGameObjects()
-    {
-        GameObject[] mt = GameObject.FindGameObjectsWithTag("MapTile");
-        for (var i = 0; i < mt.Length; i++)
-        {
-            Destroy(mt[i]);
-        }
-        mt = null;
-
-        for (var i = 0; i < SceneVariants.map.MapWidth(); i++)
-        {
-            for (var j = 0; j < SceneVariants.map.MapHeight(); j++)
-            {
-                CreateFromPrefab(SceneVariants.map.grid[i, j].prefabPath, "Map", new Vector3(i, 0, j));
-            }
-        }
-    }
-
     /// <summary>
     /// 创建一个激光对象在场景上
     /// </summary>
@@ -386,12 +342,12 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         //对象池优化后的 子弹实例化代码
-        GameObject bulletObj = ObjectPooler.GetPooledGamObjectAtIndex(0);
+        GameObject bulletObj = ObjectPooler.GetPooledGamObjectAtIndex(1);
 
         //为了避免出现空指针错误 一定要拿到对象
         while (bulletObj == null)
         {
-            bulletObj = ObjectPooler.GetPooledGamObjectAtIndex(0);
+            bulletObj = ObjectPooler.GetPooledGamObjectAtIndex(1);
         }
 
         if (bulletObj != null)
@@ -593,7 +549,7 @@ public class GameManager : MonoSingleton<GameManager>
             return null;
         }
 
-        GameObject chaObj = CreateFromPrefab("Character/CharacterObj", "Character");
+        GameObject chaObj = CreateFromPrefab("Character/CharacterObject", "Character");
 
         chaObj.name = string.Concat("enemay", UnityEngine.Random.Range(0, 999).ToString());
         ChaState cs = chaObj.GetComponent<ChaState>();
