@@ -13,6 +13,9 @@ public class BattleManager : MonoSingleton<BattleManager>
         //初始化战斗场景 包括
         //创建地图 创建主角 给主角添加buff
         GameManager.Instance.IniBattle();
-        GameManager.Instance.CreateCharacter("Skeleton",1,new Vector3(2,0,3),ChaProperty.zero,0f,"Skeleton");
+        GameObject enemy = GameManager.Instance.CreateCharacter("Skeleton", 1, new Vector3(2, 0, 3), 
+        new ChaProperty(100,100,100,100,10,100,10,0,10,10,10,1.5f,0.25f,0.05f,0.25f,0.25f,MoveType.ground,false),
+        0f, "骷髅");
+        enemy.AddComponent<UnitSimpleAI>();
     }
 }

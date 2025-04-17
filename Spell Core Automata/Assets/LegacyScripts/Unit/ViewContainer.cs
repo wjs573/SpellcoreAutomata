@@ -29,7 +29,7 @@ public class ViewContainer : MonoBehaviour
         // 计算新的位置，保持中心不变
         float offsetY = (currentScale.y - size); // Y 轴调整，保持中心位置
         transform.GetChild(0).localScale = new Vector3(size, size, size);
-        transform.GetChild(0).localPosition = new Vector3(originalPosition.x, originalPosition.y + 2*offsetY, originalPosition.z);
+        transform.GetChild(0).localPosition = new Vector3(0, originalPosition.y + 2*offsetY, 0);
     }
 
 }

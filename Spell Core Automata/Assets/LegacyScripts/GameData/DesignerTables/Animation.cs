@@ -20,9 +20,6 @@ namespace DesignerTables
                     {"Slash Attack", new AnimInfo("Slash Attack",new KeyValuePair<SingleAnimInfo, int>[]{
                         new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("LeftSlashAttack", 0.833f),1),
                         new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("RightSlashAttack", 0.833f),1)}, 5)},
-                    {"BaseAttack", new AnimInfo("Slash Attack",new KeyValuePair<SingleAnimInfo, int>[]{
-                        new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("LeftSlashAttack", 0.833f),1),
-                        new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("RightSlashAttack", 0.833f),1)}, 5)},
                     {"Spawn", new AnimInfo("Resurrect",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("Resurrect", 1f),1)}, 10)},
                     {"Hurt", new AnimInfo("Hurt",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("Hurt0", 0.667f),1) }, 1)},
                     {"Fire", new AnimInfo("ProjectileAttack",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("Projectile Attack", 0.833f),1)}, 3)},

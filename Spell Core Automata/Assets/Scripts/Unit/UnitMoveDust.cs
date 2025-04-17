@@ -3,17 +3,21 @@ using UnityEngine;
 [RequireComponent(typeof(UnitMoveStateDetector))]
 public class UnitMoveDust : MonoBehaviour
 {
-    [Header("粒子配置")]
-    [Tooltip("扬尘粒子预制件（需开启Looping）")]
-    [SerializeField] ParticleSystem _dustParticlePrefab;
-    [Tooltip("粒子生成位置偏移（角色脚部位置）")]
-    [SerializeField] Vector3 _spawnOffset = new Vector3(0, 0.05f, 0);
-    [Tooltip("最小移动速度触发阈值")]
-    [SerializeField] float _moveSpeedThreshold = 0.5f;
+    [Header("Particle Settings")]
+    [Tooltip("Dust particle prefab (should be looping)")]
+    [SerializeField] private ParticleSystem _dustParticlePrefab;
+    [Tooltip("Spawn offset from character feet")]
+    [SerializeField] private Vector3 _spawnOffset = new Vector3(0, 0.05f, 0);
+    [Tooltip("How quickly particle emission ramps up/down")]
+    [SerializeField] private float _emissionSmoothTime = 0.3f;
+    [Tooltip("Maximum emission rate when moving")]
+    [SerializeField] private float _maxEmissionRate = 20f;
 
     private UnitMoveStateDetector _moveDetector;
-    private ParticleSystem _currentParticle;
+    private ParticleSystem _dustParticle;
     private ParticleSystem.EmissionModule _emission;
+    private float _currentEmissionRate;
+    private float _emissionVelocity;
 
     private void Awake()
     {
@@ -23,39 +27,43 @@ public class UnitMoveDust : MonoBehaviour
 
     private void InitializeParticle()
     {
-        if (_dustParticlePrefab == null) return;
+        if (_dustParticlePrefab == null)
+        {
+            Debug.LogWarning("Dust particle prefab not assigned!");
+            return;
+        }
 
-        _currentParticle = Instantiate(_dustParticlePrefab, transform);
-        _currentParticle.transform.localPosition = _spawnOffset;
-        _emission = _currentParticle.emission;
-        _emission.enabled = false; // 初始禁用发射
+        _dustParticle = Instantiate(_dustParticlePrefab, transform);
+        _dustParticle.transform.localPosition = _spawnOffset;
+        _emission = _dustParticle.emission;
+        _currentEmissionRate = 0f;
+        _emission.enabled = true; // Keep emission always enabled
     }
 
     private void Update()
     {
-        if (_currentParticle == null) return;
+        if (_dustParticle == null) return;
 
-        bool shouldEmit = _moveDetector.IsMoving
-                        && _moveDetector.CurrentSpeed >= _moveSpeedThreshold
-                        && _moveDetector.IsGrounded;
+        // Calculate target emission rate based on movement state
+        float targetEmission = _moveDetector.IsMoving ? 
+            Mathf.Lerp(0, _maxEmissionRate, _moveDetector.MovementMagnitude / _moveDetector._movementThreshold) : 
+            0f;
 
-        // 控制粒子发射器开关
-        _emission.enabled = shouldEmit;
+        // Smoothly transition emission rate
+        _currentEmissionRate = Mathf.SmoothDamp(
+            _currentEmissionRate,
+            targetEmission,
+            ref _emissionVelocity,
+            _emissionSmoothTime
+        );
 
-        // 处理粒子系统播放状态
-        if (shouldEmit)
+        // Apply emission rate
+        _emission.rateOverTime = _currentEmissionRate;
+
+        // Adjust particle position to stay on ground
+        if (_moveDetector.IsGrounded)
         {
-            if (!_currentParticle.isPlaying)
-            {
-                _currentParticle.Play();
-            }
-        }
-        else
-        {
-            if (_currentParticle.isPlaying)
-            {
-                _currentParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            }
+            _dustParticle.transform.position = _moveDetector._groundHit.point + _spawnOffset;
         }
     }
 }
