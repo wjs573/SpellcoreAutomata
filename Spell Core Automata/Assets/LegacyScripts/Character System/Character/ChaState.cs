@@ -84,6 +84,7 @@ public class ChaState : MonoBehaviour
     public bool dead = false;
 
     //来自操作或者ai的移动请求信息
+    [ShowInInspector]
     private Vector3 moveOrder = new Vector3();
 
     [ShowInInspector]

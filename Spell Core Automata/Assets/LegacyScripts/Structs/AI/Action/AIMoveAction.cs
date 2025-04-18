@@ -20,7 +20,6 @@ public class AIMoveAction : AIAction
     {
         chaState = transform.parent.GetComponent<ChaState>();
         moveDegree = transform.parent.rotation.eulerAngles.y;
-        moveSkillOptions.Add(new SkillAIOption("ThreeThousandThunderMovements", 5f, 1, 0));
     }
 
     private void FixedUpdate()

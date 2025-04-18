@@ -83,6 +83,7 @@ public class GameManager : MonoSingleton<GameManager>
     protected RandomInt generatedIds;
 
     //已登场的角色，包括主角、敌人
+    [ShowInInspector]
     private List<GameObject> characters;
 
     /// <summary>
@@ -99,7 +100,7 @@ public class GameManager : MonoSingleton<GameManager>
             List<GameObject> _characters = new List<GameObject>();
             for (int i = 0; i < characters.Count; i++)
             {
-                if (characters[i] != null && !characters[i].GetComponent<ChaState>())
+                if (characters[i] != null && characters[i].GetComponent<ChaState>())
                 {
                     _characters.Add(characters[i]);
                 }
@@ -170,6 +171,7 @@ public class GameManager : MonoSingleton<GameManager>
         characters = new List<GameObject>();
 
         //创建主角
+        characters.Add(MainCharacter.Instance.gameObject);
         MainCharacter.Instance.GetComponent<ChaState>().InitBaseProp(new ChaProperty(
                 100, 0, 100,
                 5000, 10, 200, 10, 100,

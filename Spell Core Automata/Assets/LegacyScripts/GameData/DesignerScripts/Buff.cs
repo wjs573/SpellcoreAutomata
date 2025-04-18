@@ -152,7 +152,7 @@ namespace DesignerScripts
             {
                 buff.carrier.GetComponentInChildren<AIBrain>().BrainActive = false;
             }
-            buff.carrier.GetComponent<UnitAnim>().BufferAnimation = "Resurrect";
+            buff.carrier.GetComponent<UnitAnim>().BufferAnimation = "Spawn";
             buff.carrier.GetComponent<ChaState>().SetImmuneTime(0.80f);
         }
 

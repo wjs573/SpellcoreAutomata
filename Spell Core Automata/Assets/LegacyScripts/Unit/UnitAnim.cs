@@ -128,7 +128,6 @@ public class UnitAnim : MonoBehaviour
 
         try
         {
-            //animator.Play(playOne.animName);
             animator.CrossFade(playOne.animName, 0.2f, 0, 0, 0.1f);
             playingAnim = toPlay;
             priorityDuration = playOne.duration;

@@ -102,7 +102,7 @@ public class UnitMove : MonoBehaviour
             return;
         }
 
-        // 如果是角色，检查并修正单位位置，如果它处于地图外
+        //如果是角色，检查并修正单位位置，如果它处于地图外
         if (GetComponent<ChaState>() != null)
         {
             Vector3 correctedPos = SceneVariants.map.GetNearestValidPosition(transform.position, bodyRadius, moveType);

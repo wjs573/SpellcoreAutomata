@@ -10,11 +10,11 @@ namespace DesignerTables
         public static Dictionary<string, Dictionary<string, AnimInfo>> data = new Dictionary<string, Dictionary<string, AnimInfo>>(){
             {"骷髅",new Dictionary<string, AnimInfo>()
                 {
-                    {"Stand",new AnimInfo("Stand",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("Idle",1f),1)}, 0)},
+                    {"Stand",new AnimInfo("Stand",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("Idle",1f),1)}, 1)},
                     {"MoveForward", new AnimInfo("MoveForward",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("MoveForward", 1.667f),1)}, 1)},
                     {"MoveBack", new AnimInfo("MoveBack", new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("MoveForward",1.667f),1)}, 1)},
-                    {"MoveLeft", new AnimInfo("MoveLeft", new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("MoveLeft", 1.667f),1)}, 1)},
-                    {"MoveRight", new AnimInfo("MoveRight", new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("MoveRight", 1.667f),1)}, 1)},
+                    {"MoveLeft", new AnimInfo("MoveLeft", new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("MoveForward", 1.667f),1)}, 1)},
+                    {"MoveRight", new AnimInfo("MoveRight", new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("MoveForward", 1.667f),1)}, 1)},
                     {"DashForward", new AnimInfo("DashForward",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("DashForward", 0.833f),1)}, 1)},
                     {"BiteAttack", new AnimInfo("BiteAttack",new KeyValuePair<SingleAnimInfo, int>[]{new KeyValuePair<SingleAnimInfo, int>(new SingleAnimInfo("BiteAttack", 0.833f),1)}, 0)},
                     {"Slash Attack", new AnimInfo("Slash Attack",new KeyValuePair<SingleAnimInfo, int>[]{
