@@ -355,7 +355,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: accafb3e3d0afa344994ee0377a01584, type: 2}
   - {fileID: 11400000, guid: e294abf70619e9b4286ad1161cf7293f, type: 2}
   showAllVariants: 1
-  gridLayout: {x: 5, y: 5}
+  gridLayout: {x: 10, y: 10}
   tileSpacing: 20
 --- !u!1 &2141311637
 GameObject:

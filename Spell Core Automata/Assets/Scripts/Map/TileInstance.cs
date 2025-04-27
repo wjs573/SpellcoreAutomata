@@ -120,11 +120,8 @@ public class TileInstance : MonoBehaviour
         {
             foreach (var edge in edgeList)
             {
-                // 更新接口位置
-                edge.SetPosition(tileCenter, rotatedSize);
-
                 // 绘制连接线（使用Debug.DrawLine）
-                edge.DrawRedLineAtEdge(tileCenter, rotatedSize, 10f);
+                edge.DrawRedLineAtEdge(tileCenter, rotatedSize, 100f);
 
                 // 记录Gizmo绘制命令
                 _gizmoDrawCommands.Add(new GizmoDrawCommand

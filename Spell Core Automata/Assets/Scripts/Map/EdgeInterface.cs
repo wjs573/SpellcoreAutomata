@@ -24,8 +24,7 @@ public struct EdgeInterface
             tileSize.y * unitSize
         );
 
-        // 根据方向计算接口的世界坐标
-         worldPosition = direction switch
+        worldPosition = direction switch
         {
             Direction.North => tileCenter + new Vector3(
                 (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
@@ -49,9 +48,14 @@ public struct EdgeInterface
             ),
             _ => Vector3.zero
         };
+        
     }
-    
 
+    /// <summary>
+    /// ToDO: 获取边缘接口的偏移量
+    /// </summary>
+    /// <param name="tileSize"></param>
+    /// <returns></returns>
     public Vector3 GetEdgeOffset(Vector2Int tileSize)
     {
         float unitSize = 5f; // 每个单元格的Unity单位尺寸
@@ -63,55 +67,81 @@ public struct EdgeInterface
             tileSize.y * unitSize
         );
 
-        Vector3 offset = direction switch
+        Vector3 offset = Vector3.zero;
+
+        if (tileSize.x == tileSize.y)
         {
-            Direction.North => new Vector3(
-                (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
-                0,
-                tileWorldSize.z * 0.5f
-            ),
-            Direction.South => new Vector3(
-                (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
-                0,
-                -tileWorldSize.z * 0.5f
-            ),
-            Direction.East => new Vector3(
-                tileWorldSize.x * 0.5f,
-                0,
-                (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
-            ),
-            Direction.West => new Vector3(
-                -tileWorldSize.x * 0.5f,
-                0,
-                (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
-            ),
-            _ => Vector3.zero
-        };
+            offset = direction switch
+            {
+                Direction.North => new Vector3(
+                    (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
+                    0,
+                    tileWorldSize.z * 0.5f
+                ),
+                Direction.South => new Vector3(
+                    (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
+                    0,
+                    -tileWorldSize.z * 0.5f
+                ),
+                Direction.East => new Vector3(
+                    tileWorldSize.x * 0.5f,
+                    0,
+                    (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
+                ),
+                Direction.West => new Vector3(
+                    -tileWorldSize.x * 0.5f,
+                    0,
+                    (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
+                ),
+                _ => Vector3.zero
+            };
+        }
+        else
+        {
+            // 如果不是正方形，使用不同的计算方式
+            // 根据方向计算接口的世界坐标
+            offset = direction switch
+            {
+                Direction.North => new Vector3(
+                    (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
+                    0,
+                    tileWorldSize.z * 0.5f
+                ),
+                Direction.South => new Vector3(
+                    (tileSize.x - (position - 1) - (tileSize.x - 1) * 0.5f) * unitSize,
+                    0,
+                    -tileWorldSize.z * 0.5f
+                ),
+                Direction.East => new Vector3(
+                    tileWorldSize.x * 0.5f,
+                    0,
+                    (tileSize.y - (position - 1) - (tileSize.y - 1) * 0.5f) * unitSize
+                ),
+                Direction.West => new Vector3(
+                    -tileWorldSize.x * 0.5f,
+                    0,
+                    (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
+                ),
+                _ => Vector3.zero
+            };
+        }
         return offset;
     }
 
-    public EdgeInterface GetRotated(int steps)
+    public EdgeInterface GetRotated(int steps,Vector2Int size)
     {
-        Debug.Log("GetRotated: " + steps);
-        Debug.Log("Current Direction: " + direction);
         Direction newDir = (Direction)(((int)direction + steps) % 4);
-        int newPosition = position;
-        Debug.Log("New Direction: " + newDir);
 
-        // 如果旋转 90° 或 270°，需要调整 position
-        if (steps % 2 != 0)
+        if (newDir == Direction.South && size.x ==2)
         {
-            // 假设 tileSize 是 (x, y)，旋转后变成 (y, x)
-            // 所以 position 需要重新计算
-            if (direction == Direction.North || direction == Direction.South)
-            {
-                newPosition = position; // 可能需要调整
-            }
-            else if (direction == Direction.East || direction == Direction.West)
-            {
-                newPosition = position; // 可能需要调整
-            }
+            position = position == 1 ? 2 : 1;
         }
+        if (newDir == Direction.East && size.y == 2)
+        {
+            position = position == 1 ? 2 : 1;
+        }
+
+        int newPosition = position;
 
         return new EdgeInterface
         {

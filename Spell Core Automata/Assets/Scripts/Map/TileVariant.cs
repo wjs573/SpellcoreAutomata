@@ -19,7 +19,7 @@ public class TileVariant
 
         foreach (EdgeInterface edge in tile.interfaces)
         {
-            EdgeInterface rotatedEdge = edge.GetRotated(rotationSteps);
+            EdgeInterface rotatedEdge = edge.GetRotated(rotationSteps,RotatedSize);
             interfaces.Add(rotatedEdge);
         }
     }
