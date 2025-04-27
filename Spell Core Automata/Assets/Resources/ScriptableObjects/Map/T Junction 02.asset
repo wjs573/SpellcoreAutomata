@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cec88a3c5ce17f4992ad60557cacfdc, type: 3}
+  m_Name: T Junction 02
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 2062731661384877170, guid: 57b2031ac1823754faebdd685b9e095a, type: 3}
+  baseSize: {x: 3, y: 2}
+  interfaces:
+  - direction: 0
+    position: 2
+    worldPosition: {x: -37.5, y: 0, z: 55}
+  - direction: 1
+    position: 2
+    worldPosition: {x: -42.5, y: 0, z: 60}
+  - direction: 3
+    position: 1
+    worldPosition: {x: -37.5, y: 0, z: 55}
