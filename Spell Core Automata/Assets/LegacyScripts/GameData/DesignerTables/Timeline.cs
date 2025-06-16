@@ -28,6 +28,12 @@ namespace DesignerTables
             data = new Dictionary<string, TimelineModel>();
             //空
             data.Add("base", new TimelineModel("base", new TimelineNode[] { }, 0.00f, TimelineGoTo.Null));
+            data.Add("FireBall", new TimelineModel("FireBall", new TimelineNode[] 
+            {
+                new TimelineNode(0.00f,"CasterPlayAnim",new object[] {"CastSpell"}),
+                new TimelineNode(0.20f,"FireBullet",new object[] {
+                    new BulletLauncher(DesignerTables.Bullet.data["BlueFireBall"],null,Vector3.zero,0f,10f,3f,0.1f)})
+             }, 2.00f, TimelineGoTo.Null));
         }
     }
 }

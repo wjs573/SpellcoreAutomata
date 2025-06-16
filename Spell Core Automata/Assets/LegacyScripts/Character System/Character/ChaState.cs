@@ -721,9 +721,8 @@ public class ChaState : MonoBehaviour
         {
             return false;
         }
-        //目前认为 法宝在状态上是和角色独立的 角色进入无法施法状态 不影响法宝施法
-        if (this.controlState.canUseSkill == false) return false; //不能用技能就不放了
 
+        if (this.controlState.canUseSkill == false) return false; //不能用技能就不放了
         SkillObj skillObj = GetSkillById(id);
         bool castSuccess = false;
         if (skillObj == null || skillObj.cooldown > 0) return false;
@@ -732,13 +731,12 @@ public class ChaState : MonoBehaviour
         if (resource.Enough(skillObj.model.condition) == true)
         {
             TimelineObj timeline = new TimelineObj(
-                skillObj.model.effect, this.gameObject, new object[] { skillObj }
-            );
+                skillObj.model.effect, this.gameObject, new object[] { skillObj });
 
             //技能生成的TimelineObj要从技能参数中继承技能参数
             if (skillObj.model.skillParams != null)
             {
-                foreach (var kvp in skillObj.model.skillParams)
+                foreach (KeyValuePair<string, object> kvp in skillObj.model.skillParams)
                 {
                     timeline.values[kvp.Key] = kvp.Value;
                 }
@@ -755,6 +753,7 @@ public class ChaState : MonoBehaviour
             if (timeline != null)
             {
                 ModResource(-1 * skillObj.model.cost);
+                timeline.timelineType = TimelineType.ComboSkill;
                 SceneVariants.CreateTimeline(timeline);
                 castSuccess = true;
             }

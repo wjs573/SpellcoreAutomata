@@ -85,7 +85,7 @@ public class SceneVariants
     ///</summary>
     public static void CreateTimeline(TimelineModel timelineModel, GameObject caster, object[] source)
     {
-        GameObject.Find("GameManager").GetComponent<TimelineManager>().AddTimeline(timelineModel, caster, source);
+        GameManager.Instance.GetComponent<TimelineManager>().AddTimeline(timelineModel, caster, source);
     }
 
     ///<summary>
@@ -94,7 +94,7 @@ public class SceneVariants
     ///</summary>
     public static void CreateTimeline(TimelineObj timeline)
     {
-        GameObject.Find("GameManager").GetComponent<TimelineManager>().AddTimeline(timeline);
+        GameManager.Instance.GetComponent<TimelineManager>().AddTimeline(timeline);
     }
 
     ///<summary>
@@ -103,7 +103,7 @@ public class SceneVariants
     ///</summary>
     public static void ForceCreateTimeline(TimelineObj timeline)
     {
-        GameObject.Find("GameManager").GetComponent<TimelineManager>().ForceAddTimeline(timeline);
+        GameManager.Instance.GetComponent<TimelineManager>().ForceAddTimeline(timeline);
     }
 
     ///<summary>
@@ -139,7 +139,7 @@ public class SceneVariants
     ///</summary>
     public static void CreateDamage(GameObject attacker, GameObject target, Damage damage, float damageDegree, float criticalRate, DamageInfoTag[] tags)
     {
-        GameObject.Find("GameManager").GetComponent<DamageManager>().DoDamage(attacker, target, damage, damageDegree, criticalRate, tags);
+        GameManager.Instance.GetComponent<DamageManager>().DoDamage(attacker, target, damage, damageDegree, criticalRate, tags);
     }
 
     /// <summary>

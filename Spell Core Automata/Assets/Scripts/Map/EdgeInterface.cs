@@ -48,7 +48,7 @@ public struct EdgeInterface
             ),
             _ => Vector3.zero
         };
-        
+
     }
 
     /// <summary>
@@ -67,72 +67,39 @@ public struct EdgeInterface
             tileSize.y * unitSize
         );
 
-        Vector3 offset = Vector3.zero;
+        Vector3 offset = direction switch
+        {
+            Direction.North => new Vector3(
+                (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
+                0,
+                tileWorldSize.z * 0.5f
+            ),
+            Direction.South => new Vector3(
+                (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
+                0,
+                -tileWorldSize.z * 0.5f
+            ),
+            Direction.East => new Vector3(
+                tileWorldSize.x * 0.5f,
+                0,
+                (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
+            ),
+            Direction.West => new Vector3(
+                -tileWorldSize.x * 0.5f,
+                0,
+                (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
+            ),
+            _ => Vector3.zero
+        };
 
-        if (tileSize.x == tileSize.y)
-        {
-            offset = direction switch
-            {
-                Direction.North => new Vector3(
-                    (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
-                    0,
-                    tileWorldSize.z * 0.5f
-                ),
-                Direction.South => new Vector3(
-                    (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
-                    0,
-                    -tileWorldSize.z * 0.5f
-                ),
-                Direction.East => new Vector3(
-                    tileWorldSize.x * 0.5f,
-                    0,
-                    (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
-                ),
-                Direction.West => new Vector3(
-                    -tileWorldSize.x * 0.5f,
-                    0,
-                    (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
-                ),
-                _ => Vector3.zero
-            };
-        }
-        else
-        {
-            // 如果不是正方形，使用不同的计算方式
-            // 根据方向计算接口的世界坐标
-            offset = direction switch
-            {
-                Direction.North => new Vector3(
-                    (position - 1 - (tileSize.x - 1) * 0.5f) * unitSize,
-                    0,
-                    tileWorldSize.z * 0.5f
-                ),
-                Direction.South => new Vector3(
-                    (tileSize.x - (position - 1) - (tileSize.x - 1) * 0.5f) * unitSize,
-                    0,
-                    -tileWorldSize.z * 0.5f
-                ),
-                Direction.East => new Vector3(
-                    tileWorldSize.x * 0.5f,
-                    0,
-                    (tileSize.y - (position - 1) - (tileSize.y - 1) * 0.5f) * unitSize
-                ),
-                Direction.West => new Vector3(
-                    -tileWorldSize.x * 0.5f,
-                    0,
-                    (position - 1 - (tileSize.y - 1) * 0.5f) * unitSize
-                ),
-                _ => Vector3.zero
-            };
-        }
         return offset;
     }
 
-    public EdgeInterface GetRotated(int steps,Vector2Int size)
+    public EdgeInterface GetRotated(int steps, Vector2Int size)
     {
         Direction newDir = (Direction)(((int)direction + steps) % 4);
 
-        if (newDir == Direction.South && size.x ==2)
+        if (newDir == Direction.South && size.x == 2)
         {
             position = position == 1 ? 2 : 1;
         }

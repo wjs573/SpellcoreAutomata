@@ -208,7 +208,7 @@ public class TimelineManager : MonoSingleton<TimelineManager>
 
     public bool CasterHasTimeline(GameObject caster)
     {
-        for (var i = 0; i < timelines.Count; i++)
+        for (int i = 0; i < timelines.Count; i++)
         {
             if (timelines[i].timelineType == TimelineType.Character && timelines[i].caster == caster) return true;
         }

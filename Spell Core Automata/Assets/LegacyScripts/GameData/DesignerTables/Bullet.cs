@@ -14,7 +14,21 @@ namespace DesignerTables
         {
             data = new Dictionary<string, BulletModel>() { };
 
-            BulletModel bulletModel = new BulletModel();
+            BulletModel bulletModel;
+
+            ParamDictionary FireBallOnHitParams = new ParamDictionary();
+            FireBallOnHitParams.Add("攻击力加成", 1.0f);
+            FireBallOnHitParams.Add("基础暴击率", 0.05f);
+            FireBallOnHitParams.Add("命中视觉特效", "Effect/Hit/ExplosionFireballSharpBlue");
+            FireBallOnHitParams.Add("特效绑定点", "Body");
+            bulletModel = new BulletModel(
+                "BlueFireBall", "Bullet/FireballMissileBlue", "Effect/Flash/MuzzleFireballBlue",
+                "", new object[0],
+                "CommonBulletHit", FireBallOnHitParams,
+                "", new object[0],
+                MoveType.fly, false, 0.1f, 1, 0.5f, true, false);
+            data.Add("BlueFireBall", bulletModel);
+
             ParamDictionary bulletOnHitParams = new ParamDictionary();
             bulletOnHitParams.Add("攻击力加成", 1.0f);
             bulletOnHitParams.Add("基础暴击率", 0.05f);

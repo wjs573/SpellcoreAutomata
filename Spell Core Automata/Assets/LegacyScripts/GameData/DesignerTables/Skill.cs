@@ -16,6 +16,11 @@ namespace DesignerTables
                  { "BaseAttack",new SkillModel("BaseAttack",new ChaResource(0,0),new ChaResource(0,0),
                 "ChessPieceBaseAttack",null,1.00f) },
                 //*********基础技能********
+                //火球
+                {
+                    "FireBall",new SkillModel("FireBall",new ChaResource(0,30),new ChaResource(0,30),
+                    "FireBall",null,1.00f,1,null,null,false)
+                },
                 //烈焰斩
                 { "FireSlash",new SkillModel("skill_FireSlash",new ChaResource(0,30),new ChaResource(0,30),
                 "skill_FireSlash",null,1.00f,1,null,null,false) },
@@ -89,7 +94,7 @@ namespace DesignerTables
                 //骨冷灵火 火弹1
                 {"The  Bone-chilling spiritual fire",new SkillModel("The  Bone-chilling spiritual fire",new ChaResource(0,2,0),new ChaResource(0,2,0),"skill_The  Bone-chilling spiritual fire",null,1f)  },
                 //火焰飞弹
-                {"FireBall",new SkillModel("FireBall",new ChaResource(0,20,0),new ChaResource(0,20,0),"skill_fireball",null,0.80f,10)  },
+                //{"FireBall",new SkillModel("FireBall",new ChaResource(0,20,0),new ChaResource(0,20,0),"skill_fireball",null,0.80f,10)  },
                 //随机飞弹
                 {"FireRandomBall",new SkillModel("FireRandomBall",new ChaResource(0,20,0),new ChaResource(0,20,0),
                 "skill_fireRandomBullet",null,0.80f,10)  },

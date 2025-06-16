@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
         mainCharacter = MainCharacter.Instance;
 
         mainCharacter.FaBao_Equippment_Inventory.OnEquip += EquipWand;
+
+        chaState.LearnSkill(DesignerTables.Skill.data["FireBall"]);
     }
 
     public void EquipWand(int index)
@@ -92,6 +94,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButton("num1"))
         {
             chaState.GetComponent<SpellCombinationManagerContainer>().UseCurrentWand();
+        }
+
+        if (Input.GetButton("num1"))
+        {
+            chaState.CastSkill("FireBall");
         }
 
         // 处理滚轮切换武器的功能

@@ -339,30 +339,27 @@ namespace DesignerScripts
         ///</summary>
         private static void FireBullet(TimelineObj timeline, object[] args)
         {
-            GameObject actor = null;
-            if (timeline.caster)
+            GameObject actor = timeline.caster;
+            if (timeline.timelineType == TimelineType.ComboSkill)
             {
                 actor = timeline.caster;
-                if (timeline.timelineType == TimelineType.ComboSkill)
-                {
-                    actor = timeline.caster;
-                }
-
-                UnitBindManager ubm = actor.GetComponent<UnitBindManager>();
-                if (!ubm) return;
-
-                BulletLauncher bLauncher = GetValueFromParams<BulletLauncher>(0, args, null);
-                if (bLauncher == null) return;
-
-                string bindPointKey = GetValueFromParams<string>(1, args, "Muzzle");
-                UnitBindPoint ubp = ubm.GetBindPointByKey(bindPointKey, actor);
-                if (!ubp) return;
-
-                bLauncher.caster = timeline.caster;
-                bLauncher.fireDegree = actor.transform.rotation.eulerAngles.y;
-                bLauncher.firePosition = ubp.transform.position;
-                SceneVariants.CreateBullet(bLauncher);
             }
+
+            UnitBindManager ubm = actor.GetComponent<UnitBindManager>();
+            if (!ubm) return;
+
+            BulletLauncher bLauncher = GetValueFromParams<BulletLauncher>(0, args, null);
+            if (bLauncher == null) return;
+
+            string bindPointKey = GetValueFromParams<string>(1, args, "Muzzle");
+            UnitBindPoint ubp = ubm.GetBindPointByKey(bindPointKey, actor);
+            if (!ubp) return;
+
+            bLauncher.caster = timeline.caster;
+            bLauncher.fireDegree = actor.transform.rotation.eulerAngles.y;
+            bLauncher.firePosition = ubp.transform.position;
+            SceneVariants.CreateBullet(bLauncher);
+
         }
 
         private static void FireRandomBullet(TimelineObj timeline, object[] args)

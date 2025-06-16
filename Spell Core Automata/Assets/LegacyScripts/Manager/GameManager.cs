@@ -22,7 +22,7 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    private GameObject mainCharacter;
+    public GameObject mainCharacter;
 
     public Vector3 MousePositionOnXOZPlane
     {
@@ -125,9 +125,11 @@ public class GameManager : MonoSingleton<GameManager>
         DesignerTables.AoE.Initialize();
         DesignerTables.Bullet.Initialize();
         DataLaserModel.Init();
+        DesignerScripts.Timeline.Initialize();
         DesignerTables.Timeline.Initialize();
         DesignerTables.Skill.Initialize();
         DesignerTables.BattleSpawn.Initialize();
+        mainCharacter.GetComponent<ChaState>().LearnSkill(DesignerTables.Skill.data["FireBall"]);
     }
 
     private void FixedUpdate()

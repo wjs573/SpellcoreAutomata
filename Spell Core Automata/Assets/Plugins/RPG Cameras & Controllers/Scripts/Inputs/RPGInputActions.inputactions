@@ -575,17 +575,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ad233e80-90dc-456e-8aba-621f681873b2",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard + Mouse",
-                    "action": "Activate Orbiting",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3333c72d-a1bb-42fa-9acd-191d0594a4e1",
                     "path": "<Gamepad>/rightStickPress",
                     "interactions": "",
@@ -823,6 +812,34 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Cancel Climbing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "GamePlay",
+            "id": "2a285640-52cc-4b23-bf91-db55c5955fc7",
+            "actions": [
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "d7401c8a-c80f-4d6a-976b-a579ed0662d0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e7c7f340-d42f-4809-aae2-d14d33bd6102",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
