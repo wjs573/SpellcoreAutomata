@@ -181,14 +181,4 @@ namespace WJS
             this.onBeKilledParams = beKilledParam;
         }
     }
-
-    public delegate void BuffOnOccur(BuffObj buff, int modifyStack);
-    public delegate void BuffOnRemoved(BuffObj buff);
-    public delegate void BuffOnTick(BuffObj buff);
-    public delegate void BuffOnHit(BuffObj buff, ref DamageInfo damageInfo, GameObject target);
-    public delegate void BuffOnBeHurt(BuffObj buff, ref DamageInfo damageInfo, GameObject attacker);
-    public delegate void BuffOnKill(BuffObj buff, DamageInfo damageInfo, GameObject target);
-    public delegate void BuffOnBeKilled(BuffObj buff, DamageInfo damageInfo, GameObject attacker);
-    public delegate TimelineObj BuffOnCast(BuffObj buff, SkillObj skill, TimelineObj timeline);
-
 }

@@ -41,7 +41,7 @@ namespace WJS
             // 检查是否存在指定的 key
             if (DesignerScripts.Timeline.functions.ContainsKey(doEve))
             {
-                this.doEvent = TimelineData.functions[doEve];
+                this.doEvent = TimelineScripts.functions[doEve];
             }
             else
             {
@@ -61,7 +61,7 @@ namespace WJS
             // 检查是否存在指定的 key
             if (DesignerScripts.Timeline.functions.ContainsKey(doEve))
             {
-                this.doEvent = TimelineData.functions[doEve];
+                this.doEvent = TimelineScripts.functions[doEve];
             }
             else
             {

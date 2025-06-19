@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace WJS
 {
-    public class TimelineData
+    public class TimelineScripts : MonoBehaviour
     {
+        // Start is called before the first frame update
         public static Dictionary<string, TimelineEvent> functions = new Dictionary<string, TimelineEvent>();
-
 
         public static void Initialize()
         {
@@ -31,5 +31,5 @@ namespace WJS
             return args.Length > index ? (T)args[index] : defaultValue;
         }
     }
-}
 
+}

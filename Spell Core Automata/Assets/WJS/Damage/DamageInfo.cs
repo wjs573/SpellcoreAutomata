@@ -11,6 +11,11 @@ namespace WJS
         ///</summary>
         public GameObject attacker;
 
+        /// <summary>
+        /// 攻击者的chastate clone
+        /// </summary>
+        public ChaProperty attackerProperty;
+
         ///<summary>
         ///造成攻击伤害的受击者，这个必须有
         ///</summary>
@@ -63,6 +68,7 @@ namespace WJS
         public DamageInfo(GameObject attacker, GameObject defender, Damage damage, float damageDegree, float baseCriticalRate, DamageInfoTag[] tags)
         {
             this.attacker = attacker;
+            this.attackerProperty = attacker != null ? new ChaProperty(attacker.GetComponent<ChaState>().property) : ChaProperty.zero;
             this.defender = defender;
             this.damage = damage;
             this.criticalRate = baseCriticalRate;
@@ -79,7 +85,7 @@ namespace WJS
         ///</summary>
         public DamageInfo DamageValue(bool asHeal)
         {
-            return WJS.CommonScripts.DamageValue(this, asHeal);
+            return CommonScripts.DamageValue(this, asHeal);
         }
 
         ///<summary>
@@ -100,7 +106,7 @@ namespace WJS
         ///<summary>
         ///根据tag决定是否要播放受伤动作，当然你还可以是根据类型决定不同的受伤动作，但是我这个demo就没这么复杂了
         ///</summary>
-        public bool RequireDoHurt()
+        public bool requireDoHurt()
         {
             for (int i = 0; i < this.tags.Length; i++)
             {

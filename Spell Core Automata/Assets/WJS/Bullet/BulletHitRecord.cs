@@ -6,16 +6,20 @@ namespace WJS
 {
     public class BulletHitRecord : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        ///<summary>
+        ///角色的GameObject
+        ///</summary>
+        public GameObject target;
+
+        ///<summary>
+        ///多久之后还能再次命中，单位秒
+        ///</summary>
+        public float timeToCanHit;
+
+        public BulletHitRecord(GameObject character, float timeToCanHit)
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            this.target = character;
+            this.timeToCanHit = timeToCanHit;
         }
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace WJS
 {
-    public delegate void TimelineEvent(TimelineObj timeline, params object[] args);
     ///<summary>
     ///策划预先填表制作的，就是这个东西，同样她也是被clone到obj当中去的
     ///</summary>
