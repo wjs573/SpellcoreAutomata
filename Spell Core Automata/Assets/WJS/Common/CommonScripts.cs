@@ -67,7 +67,7 @@ namespace WJS
             if (rects.Count <= 0) return false;
             for (var i = 0; i < rects.Count; i++)
             {
-                if (Utils.CircleHitRect(circlePivot, circleRadius, rects[i]) == true)
+                if (CommonScripts.CircleHitRect(circlePivot, circleRadius, rects[i]) == true)
                 {
                     return true;
                 }
@@ -150,60 +150,6 @@ namespace WJS
         {
             return Mathf.Pow(x1 - x2, 2) + Mathf.Pow(y1 - y2, 2) <= Mathf.Pow(range, 2);
         }
-
-        public static bool InRange(AoeState aoeState, float x1, float y1)
-        {
-            // 判断 AoE 类型
-            if (aoeState.type == AoEType.Sector)
-            {
-                // 计算点到扇形 AoE 中心的向量
-                Vector3 toPoint = new Vector3(x1, aoeState.transform.position.y, y1) - aoeState.transform.position;
-
-                // 计算点到扇形 AoE 中心的距离
-                float distanceToCenter = toPoint.magnitude;
-
-                // 如果距离超过外半径，则不在扇形 AoE 内
-                if (distanceToCenter > aoeState.radius)
-                {
-                    return false;
-                }
-
-                // 计算点到扇形 AoE 中心的角度（相对于正前方）
-                float angleToCenter = Vector3.SignedAngle(aoeState.transform.forward, toPoint, Vector3.up);
-
-                // 计算点在扇形 AoE 内的角度范围
-                float halfRotationAngle = aoeState.rotationAngle / 2;
-
-                // 如果角度在扇形 AoE 的范围内并且距离在内半径和外半径之间，就在扇形 AoE 内
-                if (angleToCenter >= aoeState.startAngle - halfRotationAngle && angleToCenter <= aoeState.startAngle + halfRotationAngle && distanceToCenter >= aoeState.radius)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-
-            if (aoeState.type == AoEType.Rectangle)
-            {
-                // 计算世界坐标
-                Vector3 worldPosition = new Vector3(x1, 0f, y1); // 世界坐标
-                                                                 // 计算本地坐标
-                Vector3 localPosition = aoeState.transform.InverseTransformPoint(worldPosition);
-                // 如果坐标在矩形内，就在矩形内
-                if (localPosition.x <= aoeState.xLength / 2 && localPosition.x >= aoeState.xLength / -2 && localPosition.z <= aoeState.zLength / 2 && localPosition.z >= aoeState.zLength / -2)
-                {
-                    return true;
-                }
-            }
-
-            if (aoeState.type == AoEType.Circle)
-            {
-                // 计算点到圆心的向量
-                return InRange(aoeState.transform.position.x, aoeState.transform.position.z, x1, y1, aoeState.radius);
-            }
-            return false;
-        }
-
 
         ///<summary>
         ///根据面向和移动方向得到一个资源名预订了规则的后缀名

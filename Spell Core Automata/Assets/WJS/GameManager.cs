@@ -55,31 +55,12 @@ namespace WJS
         {
             isPaused = pause;
             Time.timeScale = isPaused ? 0f : 1f; // 将时间流逝速度设为0以暂停，设为1以继续
-
-            // 在进入暂停状态或离开暂停状态时执行额外的逻辑
-            if (isPaused)
-            {
-                // 执行进入暂停状态时的逻辑，比如显示暂停菜单
-                GameSoundManager.Instance.StopSound("BGM");
-            }
-            else
-            {
-                // 执行离开暂停状态时的逻辑，比如关闭暂停菜单
-                GameSoundManager.Instance.PlaySound("BGM");
-            }
         }
 
         /// <summary>
         /// 是否处于战斗场景
         /// </summary>
         public bool IsInBattle = false;
-
-        private bool HasInit = false;
-
-        /// <summary>
-        /// id生成器
-        /// </summary>
-        protected RandomInt generatedIds;
 
         //已登场的角色，包括主角、敌人
         [ShowInInspector]
@@ -117,16 +98,6 @@ namespace WJS
 
         private void Awake()
         {
-            //初始化id生成器
-            generatedIds = RandomInt.LoadData();
-
-            //初始化策划填表
-            DesignerTables.AoE.Initialize();
-            DesignerTables.Bullet.Initialize();
-            DesignerScripts.Timeline.Initialize();
-            DesignerTables.Timeline.Initialize();
-            DesignerTables.Skill.Initialize();
-            DesignerTables.BattleSpawn.Initialize();
         }
 
         private void FixedUpdate()
@@ -169,68 +140,17 @@ namespace WJS
             //初始化人物表
             characters = new List<GameObject>();
 
-            //创建主角
-            characters.Add(MainCharacter.Instance.gameObject);
-            MainCharacter.Instance.GetComponent<ChaState>().InitBaseProp(new ChaProperty(
-                    100, 0,
-                    5000, 10, 10, 100,
-                    200, 100, 15,
-                    1.5f, 0.25f, 0.05f, 0.25f, 0.4f));
-
-            //给主角添加一个寻敌组件
-            //目前是准备给法宝调用
-            //法宝获得最近的敌人
-            MainCharacter.Instance.gameObject.AddComponent<UnitGetTarget>();
-
-            ChaState mcs = MainCharacter.Instance.GetComponent<ChaState>();
-
-            //添加法宝
-            MainCharacter.Instance.FaBao_Equippment_Inventory.Clear();
-            MainCharacter.Instance.Main_inventory.Clear();
-
-            //给主角添加拾取掉落物组件
-            mcs.gameObject.AddComponent<UnitItemCollector>();
-            //设置掉落组件的目标仓库为玩家的背包
-            mcs.gameObject.GetComponent<UnitItemCollector>().targetInventory = MainCharacter.Instance.Main_inventory;
-
-            if (HasInit == false)
-            {
-                HasInit = true;
-            }
-
-            //学习技能
-            MainCharacter.Instance.Equipped_Skill_Inventory.Clear();
-            MainCharacter.Instance.Equipped_ComboSpell_Inventory.Clear();
-            MainCharacter.Instance.Skill_Inventory.Clear();
-            // for (int i = 0; i < database.ItemObjects.Length; i++)
-            // {
-            //     Item skill = new Item(database.ItemObjects[i]);
-            //     if (skill.itemObject.type == ItemType.技能 || skill.itemObject.type == ItemType.技能强化 ||
-            //         skill.itemObject.type == ItemType.触发器)
-            //     {
-            //         mcs.LearnSkill(skill.GetSkillModel());
-            //         MainCharacter.Instance.Main_inventory.AddItem(skill, 1);
-            //     }
-            // }
-            //添加技能组合组件
-            mcs.gameObject.AddComponent<SpellCombinationManagerContainer>();
+          
         }
 
         public void StartTrainMode()
         {
             IniBattle();
-
-            //初始化刷怪管理器
-            BattleSpawnData battleSpawnData = DesignerTables.BattleSpawn.data["Train"];
-            MobSpawnManager.Instance.BeginSpawning(battleSpawnData);
         }
 
         public void StartBattleMode()
         {
             IniBattle();
-            //初始化刷怪管理器
-            BattleSpawnData battleSpawnData = DesignerTables.BattleSpawn.data["Level2"];
-            MobSpawnManager.Instance.BeginSpawning(battleSpawnData);
         }
 
         /// <summary>
@@ -260,8 +180,6 @@ namespace WJS
                 RemoveSightEffect(key);
             }
 
-            //清除laser
-            LaserManager.Instance.ClearLasers();
         }
 
         //根据prefab下的资源创建东西
@@ -297,27 +215,6 @@ namespace WJS
             }
 
             return go;
-        }
-        /// <summary>
-        /// 创建一个激光对象在场景上
-        /// </summary>
-        /// <param name="laserLauncher"></param>
-        /// <returns></returns>
-        public GameObject CreateLaser(LaserLauncher laserLauncher)
-        {
-            if (!IsInBattle)
-            {
-                return null;
-            }
-
-            GameObject laserObj = Instantiate<GameObject>(
-                 Resources.Load<GameObject>("Prefabs/Laser/LaserObj"),
-                 laserLauncher.firePositionTransform.position,
-                 Quaternion.identity,
-                 root.transform.Find("Laser")
-             );
-            laserObj.GetComponent<LaserState>().InitByLaserLauncher(laserLauncher);
-            return laserObj;
         }
 
         ///<summary>
@@ -559,7 +456,6 @@ namespace WJS
 
             chaObj.transform.position = pos;
             chaObj.transform.RotateAround(chaObj.transform.position, Vector3.up, degree);
-            chaObj.GetComponent<UnitFeedback>().Init();
             //角色列表添加此角色
             characters.Add(chaObj);
 

@@ -128,5 +128,12 @@ namespace WJS
             this.addBuffs.Add(buffInfo);
         }
     }
+    public struct DamageResult
+    {
+        public int damage;
+        public bool isCritical;
+        public bool isHit;
+        public bool isHeal;
+    }
 }
 

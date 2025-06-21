@@ -163,21 +163,21 @@ namespace WJS
                 }
             }
 
-            this.onOccur = (onOccur == "") ? null : new EventManager<BuffOnOccur>(BuffData.onOccurFunc[onOccur]);
+            this.onOccur = (onOccur == "") ? null : new EventManager<BuffOnOccur>(BuffScripts.onOccurFunc[onOccur]);
             this.onOccurParams = occurParam;
-            this.onRemoved = (onRemoved == "") ? null : new EventManager<BuffOnRemoved>(BuffData.onRemovedFunc[onRemoved]);
+            this.onRemoved = (onRemoved == "") ? null : new EventManager<BuffOnRemoved>(BuffScripts.onRemovedFunc[onRemoved]);
             this.onRemovedParams = removedParam;
-            this.onTick = (onTick == "") ? null : new EventManager<BuffOnTick>(BuffData.onTickFunc[onTick]);
+            this.onTick = (onTick == "") ? null : new EventManager<BuffOnTick>(BuffScripts.onTickFunc[onTick]);
             this.onTickParams = tickParam;
-            this.onCast = (onCast == "") ? null : new EventManager<BuffOnCast>(BuffData.onCastFunc[onCast]);
+            this.onCast = (onCast == "") ? null : new EventManager<BuffOnCast>(BuffScripts.onCastFunc[onCast]);
             this.onCastParams = castParam;
-            this.onHit = (onHit == "") ? null : new EventManager<BuffOnHit>(BuffData.onHitFunc[onHit]);
+            this.onHit = (onHit == "") ? null : new EventManager<BuffOnHit>(BuffScripts.onHitFunc[onHit]);
             this.onHitParams = hitParam;
-            this.onBeHurt = (beHurt == "") ? null : new EventManager<BuffOnBeHurt>(BuffData.beHurtFunc[beHurt]);
+            this.onBeHurt = (beHurt == "") ? null : new EventManager<BuffOnBeHurt>(BuffScripts.beHurtFunc[beHurt]);
             this.onBeHurtParams = hurtParam;
-            this.onKill = (onKill == "") ? null : new EventManager<BuffOnKill>(BuffData.onKillFunc[onKill]);
+            this.onKill = (onKill == "") ? null : new EventManager<BuffOnKill>(BuffScripts.onKillFunc[onKill]);
             this.onKillParams = killParam;
-            this.onBeKilled = (beKilled == "") ? null : new EventManager<BuffOnBeKilled>(BuffData.beKilledFunc[beKilled]);
+            this.onBeKilled = (beKilled == "") ? null : new EventManager<BuffOnBeKilled>(BuffScripts.beKilledFunc[beKilled]);
             this.onBeKilledParams = beKilledParam;
         }
     }

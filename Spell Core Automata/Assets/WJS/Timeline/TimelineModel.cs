@@ -55,11 +55,6 @@ namespace WJS
                     value.model.ResetEvent();
                     return value;
                 });
-                CommonScripts.ModifyParameterOfType<LaserLauncher>(nodes[i].eveParams, (LaserLauncher value) =>
-                {
-                    value.model.ResetEvent();
-                    return value;
-                });
             }
         }
 

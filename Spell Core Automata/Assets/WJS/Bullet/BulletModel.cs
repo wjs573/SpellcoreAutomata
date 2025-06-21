@@ -137,9 +137,9 @@ namespace WJS
             this.id = id;
             this.prefab = prefab;
             this.flash = flash;
-            this.onHit = onHit == "" ? null : new EventManager<BulletOnHit>(DesignerScripts.Bullet.onHitFunc[onHit]);
-            this.onRemoved = onRemoved == "" ? null : new EventManager<BulletOnRemoved>(DesignerScripts.Bullet.onRemovedFunc[onRemoved]);
-            this.onCreate = onCreate == "" ? null : new EventManager<BulletOnCreate>(DesignerScripts.Bullet.onCreateFunc[onCreate]);
+            this.onHit = onHit == "" ? null : new EventManager<BulletOnHit>(BulletScripts.onHitFunc[onHit]);
+            this.onRemoved = onRemoved == "" ? null : new EventManager<BulletOnRemoved>(BulletScripts.onRemovedFunc[onRemoved]);
+            this.onCreate = onCreate == "" ? null : new EventManager<BulletOnCreate>(BulletScripts.onCreateFunc[onCreate]);
             this.onCreateParam = createParams ?? (new object[0]);
             this.onHitParams = onHitParams;
             this.onRemovedParams = onRemovedParams ?? (new object[0]);

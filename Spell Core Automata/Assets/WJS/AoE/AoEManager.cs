@@ -109,7 +109,7 @@ namespace WJS
                     {
                         if (
                             cha[m] &&
-                            Utils.InRange(
+                            CommonScripts.InRange(
                                 aoe[i].transform.position.x, aoe[i].transform.position.z,
                                 cha[m].transform.position.x, cha[m].transform.position.z,
                                 aoeState.radius
@@ -124,7 +124,7 @@ namespace WJS
                     {
                         if (
                             bullet[m] &&
-                            Utils.InRange(
+                            CommonScripts.InRange(
                                 aoe[i].transform.position.x, aoe[i].transform.position.z,
                                 bullet[m].transform.position.x, bullet[m].transform.position.z,
                                 aoeState.radius
@@ -147,7 +147,7 @@ namespace WJS
                     {
                         if (aoeState.characterInRange[m] != null)
                         {
-                            if (Utils.InRange(
+                            if (CommonScripts.InRange(
                                     aoe[i].transform.position.x, aoe[i].transform.position.z,
                                     aoeState.characterInRange[m].gameObject.transform.position.x, aoeState.characterInRange[m].gameObject.transform.position.z,
                                     aoeState.radius
@@ -176,7 +176,7 @@ namespace WJS
                         if (
                             cha[m] &&
                             aoeState.characterInRange.IndexOf(cha[m]) < 0 &&
-                            Utils.InRange(
+                            CommonScripts.InRange(
                                 aoe[i].transform.position.x, aoe[i].transform.position.z,
                                 cha[m].transform.position.x, cha[m].transform.position.z,
                                 aoeState.radius
@@ -202,7 +202,7 @@ namespace WJS
                     {
                         if (aoeState.bulletInRange[m])
                         {
-                            if (Utils.InRange(
+                            if (CommonScripts.InRange(
                                     aoe[i].transform.position.x, aoe[i].transform.position.z,
                                     aoeState.bulletInRange[m].gameObject.transform.position.x, aoeState.bulletInRange[m].gameObject.transform.position.z,
                                     aoeState.radius
@@ -232,7 +232,7 @@ namespace WJS
                         if (
                             bullet[m] &&
                             aoeState.bulletInRange.IndexOf(bullet[m]) < 0 &&
-                            Utils.InRange(
+                            CommonScripts.InRange(
                                 aoe[i].transform.position.x, aoe[i].transform.position.z,
                                 bullet[m].transform.position.x, bullet[m].transform.position.z,
                                 aoeState.radius

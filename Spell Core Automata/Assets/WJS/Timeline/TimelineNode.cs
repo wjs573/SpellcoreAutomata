@@ -39,7 +39,7 @@ namespace WJS
             this.timeElapsed = time;
             this.TimelineEventName = doEve;
             // 检查是否存在指定的 key
-            if (DesignerScripts.Timeline.functions.ContainsKey(doEve))
+            if (TimelineScripts.functions.ContainsKey(doEve))
             {
                 this.doEvent = TimelineScripts.functions[doEve];
             }
@@ -59,7 +59,7 @@ namespace WJS
             this.timeElapsed = time;
             this.TimelineEventName = doEve;
             // 检查是否存在指定的 key
-            if (DesignerScripts.Timeline.functions.ContainsKey(doEve))
+            if (TimelineScripts.functions.ContainsKey(doEve))
             {
                 this.doEvent = TimelineScripts.functions[doEve];
             }

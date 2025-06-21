@@ -18,8 +18,7 @@ namespace WJS
         ///是否被视作刚创建
         ///</summary>
         public bool justCreated = true;
-
-        public AoEType type; // 使用枚举表示 AoE 类型
+        
         ///<summary>
         ///aoe的半径，单位：米
         ///目前这游戏的设计中，aoe只有圆形，所以只有一个半径，也不存在角度一说，如果需要可以扩展

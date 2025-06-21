@@ -184,7 +184,6 @@ namespace WJS
         private Animator animator;
         private UnitBindManager bindPoints;
         private GameObject viewContainer;
-        private UnitFeedback unitFeedbacks;
 
         private bool isForceMoving = false;
 
@@ -317,7 +316,7 @@ namespace WJS
                     }
                     else
                     {
-                        string tt = Utils.GetTailStringByDegree(transform.rotation.eulerAngles.y, tryMoveDegree);
+                        string tt = CommonScripts.GetTailStringByDegree(transform.rotation.eulerAngles.y, tryMoveDegree);
                         animOrder.Add("Move" + tt);
                     }
                     //送给动画系统处理
@@ -347,7 +346,6 @@ namespace WJS
             if (!animator) animator = this.gameObject.GetComponent<Animator>();
             if (!bindPoints) bindPoints = this.gameObject.GetComponent<UnitBindManager>();
             if (!viewContainer) viewContainer = this.gameObject.GetComponentInChildren<ViewContainer>().gameObject;
-            if (!unitFeedbacks) unitFeedbacks = this.gameObject.GetComponentInChildren<UnitFeedback>();
         }
 
         ///<summary>
@@ -856,15 +854,6 @@ namespace WJS
             float degree = (_z > 0) ? Mathf.Atan(_x / _z) * 180.00f / Mathf.PI : Mathf.Atan(_x / _z) * 180.00f / Mathf.PI - 180f;
 
             unitRotate.SetRotation(degree);
-        }
-
-        /// <summary>
-        /// 播放feedbacks
-        /// </summary>
-        /// <param name="name"></param>
-        public void PlayFeedbacks(string name)
-        {
-            unitFeedbacks.play(name);
         }
     }
 }
