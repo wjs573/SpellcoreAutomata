@@ -10,7 +10,6 @@ public class EquipmentData
     // 初始化方法
     public static void Initialize()
     {
-        // 创建一个新的字典，键为字符串，值为RuneModel类型
         data = new Dictionary<string, EquipmentModel>()
         {
             {"星辉棒", new EquipmentModel()
