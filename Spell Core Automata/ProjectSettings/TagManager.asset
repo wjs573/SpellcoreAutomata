@@ -10,6 +10,9 @@ TagManager:
   - Laser
   - Bullet
   - AoE
+  - Terrain
+  - Ground
+  - Character
   layers:
   - Default
   - TransparentFX

@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using WJS;
+
+public class EquipmentData
+{
+    public static Dictionary<string, EquipmentModel> data = new Dictionary<string, EquipmentModel>();
+
+    // 初始化方法
+    public static void Initialize()
+    {
+        // 创建一个新的字典，键为字符串，值为RuneModel类型
+        data = new Dictionary<string, EquipmentModel>()
+        {
+            {"星辉棒", new EquipmentModel()
+            {
+                id = "20001",
+                name = "星辉棒",
+                icon = "starRod",
+                type = EquipmentType.weapon,
+                equipmentProperty = new ChaProperty(0,0,0,100,0,100,0,10,0),
+                wandData = new WandData
+                {
+                    SlotCount = 4,
+                    CastInterval = 0.25f,
+                    BaseScatter = 10,
+                    RuneSlots = new List<RuneSlot>(4)
+                    {
+                        new RuneSlot(RuneData.data["FireBall"])
+                    }
+                }
+            }}
+        };
+    }
+}

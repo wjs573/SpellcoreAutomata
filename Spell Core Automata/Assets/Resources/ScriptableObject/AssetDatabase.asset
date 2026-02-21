@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd63132ae99e6e4eb7de16fa8641c1e, type: 3}
+  m_Name: AssetDatabase
+  m_EditorClassIdentifier: 
+  assetEntries:
+  - id: AoEObj
+    prefab: {fileID: 5137607023867101692, guid: 906ad817096ef24499953f39c1425df5, type: 3}
+  - id: BulletObj
+    prefab: {fileID: 80183292625837530, guid: 2db59f1ff1c672847ba5aa56d7613f56, type: 3}
+  - id: LootCube
+    prefab: {fileID: 4711971052426394737, guid: d5bda053971291b44847b529dbbb1503, type: 3}
+  - id: Skeleton
+    prefab: {fileID: 3650167740416154607, guid: 0289a03476b455244a7ebe9ff567288d, type: 3}
+  - id: ThrowableCube
+    prefab: {fileID: 9088435533308780415, guid: 5b578dfa07299d348a9ec4fdeb7a01bf, type: 3}
+  - id: ThrowCubeTrail
+    prefab: {fileID: 6228638089862564663, guid: e9acdca4f2897b741a2ea2fe4980f395, type: 3}
+  - id: CharacterObj
+    prefab: {fileID: 8678810632489812894, guid: ad204ec154f7d254d9f77ec9f7bcee09, type: 3}
+  - id: FlashMissileBlue
+    prefab: {fileID: 1926566434666326889, guid: 2dde0b8d6779933469e710acae3329f2, type: 3}
+  - id: FlashMissileGreen
+    prefab: {fileID: 8982759930973686653, guid: f7209df6c00f71540b2f42a9b38636f1, type: 3}
+  - id: FlashMissilePink
+    prefab: {fileID: 4960148018265493551, guid: ad77ae03436ba6f46af4950f305ce5e2, type: 3}
+  - id: FlashMissileYellow
+    prefab: {fileID: 554159498902483262, guid: 389778cd696540e4ba43a422eb43b6ee, type: 3}
+  - id: FlashExplosionRadial
+    prefab: {fileID: 50441623837426031, guid: c14640f55aa32a24e8ff50eb8642f2f8, type: 3}
+  - id: SparkleMuzzleBlue
+    prefab: {fileID: 624867759104414279, guid: e4fba30698afbad438446e1a6f00f1c1, type: 3}
+  - id: SparkleMuzzleGreen
+    prefab: {fileID: 8372135506200441709, guid: 31745fe71c9d23b489e0cf8eb61de26b, type: 3}
+  - id: SparkleMuzzlePink
+    prefab: {fileID: 3880870958867825120, guid: 63ee9ace239417443aab766a4ec934a2, type: 3}
+  - id: SparkleMuzzleYellow
+    prefab: {fileID: 1067040028519065127, guid: 30c39cd861faabd4d81b482da27de3fa, type: 3}
+  - id: FlashExplosionBlue
+    prefab: {fileID: 8496897794094896695, guid: 0dfdba7789dadf340b3038b6d9f458a1, type: 3}
+  - id: FlashExplosionGreen
+    prefab: {fileID: 2206121280095497387, guid: 0b404191fcfc7064e858ef5213c6d5a7, type: 3}
+  - id: FlashExplosionPink
+    prefab: {fileID: 2481633234033114196, guid: 17c11ae84b7f6804e80b075f746a787a, type: 3}
+  - id: FlashExplosionYellow
+    prefab: {fileID: 4984194580655828343, guid: 73834295787987448b1a4d8188aa7473, type: 3}
