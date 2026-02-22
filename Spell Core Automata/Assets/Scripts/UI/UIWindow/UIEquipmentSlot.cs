@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using WJS;
+using TMPro;
 
 /// <summary>
 /// 装备槽位UI组件
@@ -15,7 +16,7 @@ public class UIEquipmentSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public Image iconImage;
     public Image highlightImage;
     public Image backgroundImage;
-    public Text slotNameText;
+    public TMP_Text slotNameText;
     
     [Header("设置")]
     public bool allowDrag = true;
@@ -45,7 +46,7 @@ public class UIEquipmentSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (backgroundImage == null)
             backgroundImage = GetComponent<Image>();
         if (slotNameText == null)
-            slotNameText = transform.Find("SlotName")?.GetComponent<Text>();
+            slotNameText = transform.Find("SlotName")?.GetComponent<TMP_Text>();
             
         if (highlightImage != null)
             originalHighlightColor = highlightImage.color;
@@ -250,6 +251,7 @@ public class UIEquipmentSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log($"Enter:{ gameObject.name}");
         // 检查是否有物品正在拖拽
         if (UIDragController.Instance.IsDragging)
         {
@@ -267,11 +269,17 @@ public class UIEquipmentSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
+    /// <summary>
+    /// 当鼠标指针离开UI元素时触发的事件处理方法
+    /// </summary>
+    /// <param name="eventData">包含指针事件的数据信息</param>
     public void OnPointerExit(PointerEventData eventData)
     {
+        // 取消高亮显示
         SetHighlight(false);
         
         // 隐藏提示
+        // 检查背包窗口是否存在，如果存在则调用其隐藏提示的方法
         if (BackpackWindow != null)
         {
             BackpackWindow.HideTooltip();

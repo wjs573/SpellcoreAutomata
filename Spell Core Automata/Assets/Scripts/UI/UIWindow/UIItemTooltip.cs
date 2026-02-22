@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using WJS;
-
+using TMPro;
 /// <summary>
 /// 物品提示UI组件
 /// </summary>
 public class UIItemTooltip : MonoBehaviour
 {
     [Header("UI组件")]
-    public Text itemNameText;
-    public Text itemTypeText;
-    public Text itemDescText;
-    public Text propertyText;
+    public TMP_Text itemNameText;
+    public TMP_Text itemTypeText;
+    public TMP_Text itemDescText;
+    public TMP_Text propertyText;
     public Image iconImage;
     public Image backgroundImage;
     

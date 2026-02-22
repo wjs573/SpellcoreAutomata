@@ -211,6 +211,7 @@ public class UIInventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+         Debug.Log($"Enter:{ gameObject.name}");
         // 检查是否有物品正在拖拽
         if (UIDragController.Instance.IsDragging)
         {

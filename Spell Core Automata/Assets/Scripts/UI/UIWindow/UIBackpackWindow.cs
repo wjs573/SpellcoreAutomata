@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 using WJS;
@@ -22,9 +23,6 @@ public class UIBackpackWindow : UIWindow
     [Header("角色属性显示")]
     public Text propertyText;
     
-    [Header("关闭按钮")]
-    public Button closeButton;
-    
     [Header("物品提示")]
     public UIItemTooltip tooltip;
     public GameObject tooltipPrefab;
@@ -36,13 +34,13 @@ public class UIBackpackWindow : UIWindow
     private Dictionary<EquipmentType, UIEquipmentSlot> equipmentSlots;
     
     // 目标角色的背包组件
+    [ShowInInspector]
     private UnitBackpack targetBackpack;
     private ChaState targetChaState;
 
     private void Start()
     {
         InitializeSlots();
-        InitializeCloseButton();
         
         // 查找主角的背包
         FindTargetBackpack();
@@ -126,24 +124,6 @@ public class UIBackpackWindow : UIWindow
                     inventorySlots.Add(slot);
                 }
             }
-        }
-    }
-
-    /// <summary>
-    /// 初始化关闭按钮
-    /// </summary>
-    private void InitializeCloseButton()
-    {
-        if (closeButton != null)
-        {
-            closeButton.onClick.AddListener(() => SetVisible(false));
-        }
-        
-        // 也可以按B键关闭
-        UIEventListener listener = GetUIEventListener("ButtonClose");
-        if (listener != null)
-        {
-            listener.PointerClick += (eventData) => SetVisible(false);
         }
     }
 

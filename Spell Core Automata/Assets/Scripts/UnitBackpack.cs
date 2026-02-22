@@ -18,10 +18,19 @@ public class UnitBackpack : MonoBehaviour
     // 背包变更事件
     public event Action OnInventoryChanged;
     public event Action OnEquipmentChanged;
+
+    private void Start()
+    {
+        Init();
+    }
     public void Init()
     {
         inventory = new List<EquipmentObj>(20);
         equippedEquipment = new Dictionary<EquipmentType, EquipmentObj>();
+        equippedEquipment.Add(EquipmentType.armor, null);
+        equippedEquipment.Add(EquipmentType.weapon, null);
+        equippedEquipment.Add(EquipmentType.trinket, null);
+        equippedEquipment.Add(EquipmentType.helm, null);
     }
     /// <summary>
     /// 添加物品到背包
@@ -58,9 +67,9 @@ public class UnitBackpack : MonoBehaviour
     public bool EquipEquipment(EquipmentObj equip)
     {
         if (equip == null) return false;
-        
+
         EquipmentType slotType = equip.model.type;
-        
+
         // 如果该槽位已有装备，先卸载
         if (equippedEquipment.ContainsKey(slotType) && equippedEquipment[slotType] != null)
         {
@@ -76,7 +85,7 @@ public class UnitBackpack : MonoBehaviour
         }
         // 应用装备属性
         ApplyEquipmentBuffs(equip, true);
-        
+
         // 刷新角色属性
         ChaState chaState = GetComponent<ChaState>();
         if (chaState != null)
@@ -95,7 +104,7 @@ public class UnitBackpack : MonoBehaviour
         if (!equippedEquipment.ContainsKey(slotType) || equippedEquipment[slotType] == null)
             return false;
         EquipmentObj equip = equippedEquipment[slotType];
-        
+
         // 移除装备效果
         ApplyEquipmentBuffs(equip, false);
         // 从装备槽移除并放回背包
@@ -122,7 +131,7 @@ public class UnitBackpack : MonoBehaviour
     public bool UnequipEquipment(EquipmentObj equip)
     {
         if (equip == null) return false;
-        
+
         foreach (var kvp in equippedEquipment)
         {
             if (kvp.Value == equip)
@@ -194,22 +203,22 @@ public class UnitBackpack : MonoBehaviour
             if (item.model.type == EquipmentType.weapon)
                 allWeapons.Add(item);
         }
-        
+
         // 加上当前装备的武器
         if (equippedWeapon != null)
             allWeapons.Add(equippedWeapon);
         if (allWeapons.Count <= 1) return;
         int currentIndex = allWeapons.IndexOf(equippedWeapon);
         if (currentIndex < 0) currentIndex = 0;
-        
+
         int nextIndex = (currentIndex - 1 + allWeapons.Count) % allWeapons.Count;
-        
+
         // 先卸载当前武器
         if (equippedWeapon != null)
         {
             UnequipEquipment(EquipmentType.weapon);
         }
-        
+
         // 装备新武器
         EquipEquipment(allWeapons[nextIndex]);
     }
@@ -225,22 +234,22 @@ public class UnitBackpack : MonoBehaviour
             if (item.model.type == EquipmentType.weapon)
                 allWeapons.Add(item);
         }
-        
+
         // 加上当前装备的武器
         if (equippedWeapon != null)
             allWeapons.Add(equippedWeapon);
         if (allWeapons.Count <= 1) return;
         int currentIndex = allWeapons.IndexOf(equippedWeapon);
         if (currentIndex < 0) currentIndex = 0;
-        
+
         int nextIndex = (currentIndex + 1) % allWeapons.Count;
-        
+
         // 先卸载当前武器
         if (equippedWeapon != null)
         {
             UnequipEquipment(EquipmentType.weapon);
         }
-        
+
         // 装备新武器
         EquipEquipment(allWeapons[nextIndex]);
     }
